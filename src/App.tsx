@@ -11,10 +11,10 @@ function App() {
 
   return (
     <BrowserRouter>
-      <FLContext.Provider value={{ changePage: setPage }}>
-          <Header/>
-          <Main page={page}/>
-      </FLContext.Provider>
+        <FLContext.Provider value={{changePage: setPage}}>
+            <Header/>
+            <Main page={page}/>
+        </FLContext.Provider>
     </BrowserRouter>
   )
 }

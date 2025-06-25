@@ -1,10 +1,13 @@
 import Navigation from "../Navigation/Navigation.tsx";
+import "./Header.css";
 
 const Header = () => {
     return (
-        <header className={`bg-grey-color rounded-t-bg`}>
-            <Navigation/>
-            <h1 className={`text-[3em] text-center py-[0.5em]`}>Left not Over</h1>
+        <header className="header">
+            <Navigation />
+            <div className="header-title-container">
+                <h1 className="header-title">Left(not)Over</h1>
+            </div>
         </header>
     );
 };

@@ -1,0 +1,29 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 2rem;
+    text-align: center;
+    color: #2e7d32; /* глубокий зелёный */
+}
+
+.home-title {
+    font-size: 3.5rem; /* ~56px */
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.home-description {
+    font-size: 1.5rem; /* ~24px */
+    max-width: 800px;
+    line-height: 1.8;
+    color: #444;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
