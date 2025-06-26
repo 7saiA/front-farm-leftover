@@ -1,12 +1,11 @@
 import Products from "../Products/Products.tsx";
 import Home from "../Home/Home.tsx";
 import {navItems} from "../../utils/constants.ts";
+import {useAppSelector} from "../../app/hooks.ts";
 
-interface Props {
-    page: string;
-}
+const Main = () => {
+    const page = useAppSelector((state) => state.page.currentPage);
 
-const Main = ({page}: Props) => {
     switch (page) {
         case navItems[1]:
             return <Products/>

@@ -1,15 +1,15 @@
-import {useContext} from "react";
-import {FLContext} from "../../utils/context.ts";
+import {useAppDispatch} from "../../app/hooks.ts";
+import {changePage} from "../../features/pageSlice.ts";
 
 interface Props {
     itemTitle: string
 }
 const NavItem = ({itemTitle}: Props) => {
-    const {changePage} = useContext(FLContext);
+    const dispatch = useAppDispatch();
 
     return (
         <li>
-            <button onClick={() => changePage(itemTitle)}>
+            <button onClick={() => dispatch(changePage(itemTitle))}>
                 {itemTitle}
             </button>
         </li>
