@@ -1,29 +1,13 @@
 import { useEffect, useState } from "react";
 import { base_url } from "../../utils/constants.ts";
 import "./Product.css";
-
-interface UserForProductDto {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    city: string | null;
-    street: string | null;
-}
-
-interface Product {
-    productId: number;
-    productName: string;
-    pricePerUnit: number;
-    unit: string;
-    availableQuantity: number;
-    userForProductDto: UserForProductDto;
-}
+import ProductsList from "./ProductsList.tsx";
+import type {Product} from "../../types/Product.ts";
 
 const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [flippedProductId, setFlippedProductId] = useState<number | null>(null);
+    const [flippedId, setFlippedId] = useState<number | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -41,7 +25,7 @@ const Products = () => {
     }, []);
 
     const toggleFlip = (id: number) => {
-        setFlippedProductId(flippedProductId === id ? null : id);
+        setFlippedId(flippedId === id ? null : id);
     };
 
     const deleteProduct = async (id: number) => {
@@ -65,50 +49,12 @@ const Products = () => {
             ) : products.length === 0 ? (
                 <p>Here is no Products</p>
             ) : (
-                <div className="product-grid">
-                    {products.map(product => (
-                        <div
-                            key={product.productId}
-                            className={`card ${flippedProductId === product.productId ? "flipped" : ""}`}
-                        >
-                            <div className="card-inner">
-                                {/* Front side */}
-                                <div className="card-front">
-                                    <h3>{product.productName}</h3>
-                                    <p><strong>Price:</strong> {product.pricePerUnit} per {product.unit}</p>
-                                    <p><strong>Available:</strong> {product.availableQuantity}</p>
-                                    <p>
-                                        <strong>Farm:</strong>{" "}
-                                        <span
-                                            className="farm-link"
-                                            onClick={() => toggleFlip(product.productId)}
-                                        >
-                                            {product.userForProductDto.name}
-                                        </span>
-                                    </p>
-                                    <button className="delete-btn" onClick={() => deleteProduct(product.productId)}>
-                                        Delete
-                                    </button>
-                                </div>
-
-                                {/* Back side */}
-                                <div className="card-back">
-                                    <div className="farm-header">
-                                        <strong
-                                            onClick={() => toggleFlip(product.productId)}
-                                            className="product-name-back"
-                                        >
-                                            {product.productName}
-                                        </strong>
-                                    </div>
-                                    <h4>{product.userForProductDto.name}</h4>
-                                    <p><strong>City:</strong> {product.userForProductDto.city ?? "nope"}</p>
-                                    <p><strong>Street:</strong> {product.userForProductDto.street ?? "nope"}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                <ProductsList
+                    products={products}
+                    flippedId={flippedId}
+                    toggleFlip={toggleFlip}
+                    deleteProduct={deleteProduct}
+                />
             )}
         </div>
     );

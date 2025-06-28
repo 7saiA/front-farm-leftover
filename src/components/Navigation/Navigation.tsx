@@ -7,7 +7,7 @@ const Navigation = () => {
         <nav className="navigation">
             <ul className="nav-list">
                 {navItems.map((item: string) => (
-                    <NavItem key={item} itemTitle={item} />
+                    <NavItem key={item} itemTitle={item}/>
                 ))}
             </ul>
         </nav>
