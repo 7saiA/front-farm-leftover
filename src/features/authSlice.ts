@@ -34,6 +34,29 @@ export const registerUser = createAsyncThunk(
     }
 );
 
+export const loginUser = createAsyncThunk(
+    "auth/loginUser",
+    async (
+        formData: { login: string; password: string },
+        thunkAPI
+    ) => {
+        try {
+            const response = await fetch(`${base_url}/users/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+            if (!response.ok) {
+                const err = await response.text();
+                return thunkAPI.rejectWithValue(err);
+            }
+            return await response.json();
+        } catch (error) {
+            return thunkAPI.rejectWithValue("Server error");
+        }
+    }
+)
+
 const initialState: AuthState = {
     token: localStorage.getItem('token'),
     role: (localStorage.getItem('role') as AuthState['role']) ?? 'GUEST',
@@ -87,7 +110,25 @@ const authSlice = createSlice({
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
-            });
+            })
+            .addCase(loginUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.token = action.payload.accessToken;
+                state.role = action.payload.roles[0];
+                state.login = action.payload.login;
+
+                localStorage.setItem("token", action.payload.accessToken);
+                localStorage.setItem("role", action.payload.roles[0]);
+                localStorage.setItem("login", action.payload.login);
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
     }
 });
 

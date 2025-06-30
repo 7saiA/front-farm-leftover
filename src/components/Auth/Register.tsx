@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { registerUser } from "../../features/authSlice";
 import "./Register.css";
+import {changePage} from "../../features/pageSlice.ts";
+import {navItems} from "../../utils/constants.ts";
 
 const Register = () => {
     const dispatch = useAppDispatch();
@@ -29,7 +31,10 @@ const Register = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Здесь можно отправлять formData + флаг isFarmer
-        dispatch(registerUser(formData));
+        dispatch(registerUser(formData))
+            .unwrap()
+            .then(() => dispatch(changePage(navItems[5])))
+            .catch((err) => console.error("Registration failed", err));
     };
 
     return (
