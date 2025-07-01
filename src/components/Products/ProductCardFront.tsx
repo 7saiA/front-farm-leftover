@@ -3,10 +3,9 @@ import type {Product} from "../../types/Product.ts";
 interface Props {
     product: Product;
     onFlip: (id: number) => void;
-    onDelete: (id: number) => void;
 }
 
-const ProductCardFront = ({product, onFlip, onDelete}: Props) => {
+const ProductCardFront = ({product, onFlip}: Props) => {
     return (
         /* Front side */
         <div className="card-front">
@@ -19,7 +18,6 @@ const ProductCardFront = ({product, onFlip, onDelete}: Props) => {
                             {product.userForProductDto.login}
                         </span>
             </p>
-            <button className="delete-btn" onClick={() => onDelete(product.productId)}>Delete</button>
         </div>
     )
 }

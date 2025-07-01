@@ -6,14 +6,13 @@ interface ProductCardsProps {
     product: Product;
     isFlipped: boolean;
     onFlip: (id: number) => void;
-    onDelete: (id: number) => void;
 }
 
-const ProductCards = ({product, isFlipped, onFlip, onDelete}: ProductCardsProps) => {
+const ProductCards = ({product, isFlipped, onFlip}: ProductCardsProps) => {
     return (
         <div className={`card ${isFlipped ? "flipped" : ""}`}>
             <div className="card-inner">
-                <ProductCardFront product={product} onFlip={onFlip} onDelete={onDelete}/>
+                <ProductCardFront product={product} onFlip={onFlip} />
                 <ProductCardBack product={product} onFlip={onFlip}/>
             </div>
         </div>

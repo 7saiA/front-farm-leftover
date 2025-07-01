@@ -28,17 +28,7 @@ const Products = () => {
         setFlippedId(flippedId === id ? null : id);
     };
 
-    const deleteProduct = async (id: number) => {
-        try {
-            const response = await fetch(`${base_url}/products/${id}`, {
-                method: "DELETE",
-            });
-            if (!response.ok) throw new Error(`Error delete: ${response.status}`);
-            setProducts(prev => prev.filter(product => product.productId !== id));
-        } catch (err) {
-            console.error("Error delete product:", err);
-        }
-    };
+
 
     return (
         <div>
@@ -53,7 +43,6 @@ const Products = () => {
                     products={products}
                     flippedId={flippedId}
                     toggleFlip={toggleFlip}
-                    deleteProduct={deleteProduct}
                 />
             )}
         </div>

@@ -5,10 +5,9 @@ interface ProductsListProps {
     products: Product[];
     flippedId: number | null;
     toggleFlip: (id: number) => void;
-    deleteProduct: (id: number) => void;
 }
 
-const ProductsList = ({products, flippedId, toggleFlip, deleteProduct}: ProductsListProps) => {
+const ProductsList = ({products, flippedId, toggleFlip}: ProductsListProps) => {
     return (
         <div className="product-grid">
             {products.map(product => (
@@ -17,7 +16,6 @@ const ProductsList = ({products, flippedId, toggleFlip, deleteProduct}: Products
                     product={product}
                     isFlipped={flippedId === product.productId}
                     onFlip={toggleFlip}
-                    onDelete={deleteProduct}
                 />
             ))}
         </div>
