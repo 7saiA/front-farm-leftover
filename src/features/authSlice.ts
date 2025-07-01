@@ -3,7 +3,7 @@ import { base_url } from "../utils/constants.ts";
 
 interface AuthState {
     token: string | null;
-    role: 'GUEST' | 'USER' | 'FARMER' | 'MODERATOR' | 'ADMIN' | null;
+    role: 'GUEST' | 'USER' | 'FARM' | 'MODERATOR' | 'ADMIN' | null;
     login: string | null;
     loading: boolean;
     error: string | null;

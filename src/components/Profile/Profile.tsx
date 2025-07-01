@@ -3,12 +3,14 @@ import {useEffect, useState} from "react";
 import {changePage} from "../../features/pageSlice.ts";
 import {base_url, navItems} from "../../utils/constants.ts";
 import type {UserForProductDto} from "../../types/Product.ts";
+import "./Profile.css";
 
 const Profile = () => {
     const dispatch = useAppDispatch();
-    const {login, token} = useAppSelector(state => state.auth);
+    const {login, token, role} = useAppSelector(state => state.auth);
     const [userData, setUserData] = useState<UserForProductDto | null>(null);
-
+    console.log("TOKEN:", token);
+    console.log("ROLE:", role);
     useEffect(() => {
         const loadProfile = async () => {
             if (!token || !login) {
@@ -20,7 +22,9 @@ const Profile = () => {
                 const response = await fetch(`${base_url}/users/profile`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
                     },
+                    credentials: "include",
                 });
 
                 if (!response.ok) {

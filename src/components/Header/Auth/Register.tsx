@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { registerUser } from "../../features/authSlice";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
+import { registerUser } from "../../../features/authSlice.ts";
 import "./Register.css";
-import {changePage} from "../../features/pageSlice.ts";
-import {navItems} from "../../utils/constants.ts";
+import {changePage} from "../../../features/pageSlice.ts";
+import {navItems} from "../../../utils/constants.ts";
 
 const Register = () => {
     const dispatch = useAppDispatch();
@@ -41,10 +41,10 @@ const Register = () => {
         <div className="register-form">
             <h2>Register</h2>
             <form onSubmit={handleSubmit}>
-                <input name="login" placeholder="Name" value={formData.login} onChange={handleChange} required />
-                <input name="email" placeholder="Email" type="email" value={formData.email} onChange={handleChange} required />
-                <input name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} required />
-                <input name="password" placeholder="Password" type="password" value={formData.password} onChange={handleChange} required />
+                <input name="login" placeholder="Name" value={formData.login} onChange={handleChange} required autoComplete="off" />
+                <input name="email" placeholder="Email" type="email" value={formData.email} onChange={handleChange} required autoComplete="off" />
+                <input name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} required autoComplete="off" />
+                <input name="password" placeholder="Password" type="password" value={formData.password} onChange={handleChange} required autoComplete="off" />
 
                 {!isFarmer && (
                     <button type="button" onClick={() => setIsFarmer(true)} style={{ marginBottom: "1rem" }}>
@@ -54,9 +54,9 @@ const Register = () => {
 
                 {isFarmer && (
                     <>
-                        <input name="farmName" placeholder="Farm Name" value={formData.farmName} onChange={handleChange} required />
-                        <input name="city" placeholder="City" value={formData.city} onChange={handleChange} required />
-                        <input name="street" placeholder="Street" value={formData.street} onChange={handleChange} required />
+                        <input name="farmName" placeholder="Farm Name" value={formData.farmName} onChange={handleChange} required autoComplete="off" />
+                        <input name="city" placeholder="City" value={formData.city} onChange={handleChange} required autoComplete="off" />
+                        <input name="street" placeholder="Street" value={formData.street} onChange={handleChange} required autoComplete="off" />
 
                         <button type="button" onClick={() => setIsFarmer(false)} style={{ marginBottom: "1rem", marginRight: "1rem" }}>
                             Be a normal Guy

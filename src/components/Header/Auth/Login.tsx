@@ -1,8 +1,8 @@
-import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useState} from "react";
-import {loginUser} from "../../features/authSlice.ts";
-import {changePage} from "../../features/pageSlice.ts";
-import {navItems} from "../../utils/constants.ts";
+import {loginUser} from "../../../features/authSlice.ts";
+import {changePage} from "../../../features/pageSlice.ts";
+import {navItems} from "../../../utils/constants.ts";
 
 const Login = () => {
     const dispatch = useAppDispatch();
@@ -38,6 +38,7 @@ const Login = () => {
                 value={formData.login}
                 onChange={handleChange}
                 required
+                autoComplete="off"
                 />
                 <input
                     name="password"
@@ -46,6 +47,7 @@ const Login = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
+                    autoComplete="off"
                 />
                 <button type="submit" disabled={loading}>
                     {loading ? "Logging in..." : "Sing In"}
