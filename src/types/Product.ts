@@ -3,6 +3,7 @@ export interface UserForProductDto {
     name: string;
     email: string;
     phone: string;
+    role: string;
     farmName: string;
     city: string | null;
     street: string | null;

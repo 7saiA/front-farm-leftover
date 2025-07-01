@@ -30,8 +30,19 @@ const Register = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Здесь можно отправлять formData + флаг isFarmer
-        dispatch(registerUser(formData))
+
+        // формируем данные для отправки
+        const dataToSend = isFarmer
+            ? { ...formData, isFarmer: true }
+            : {
+                login: formData.login,
+                email: formData.email,
+                password: formData.password,
+                phone: formData.phone,
+                isFarmer: false,
+            };
+
+        dispatch(registerUser(dataToSend))
             .unwrap()
             .then(() => dispatch(changePage(navItems[5])))
             .catch((err) => console.error("Registration failed", err));

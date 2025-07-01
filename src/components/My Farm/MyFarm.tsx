@@ -9,8 +9,6 @@ const MyFarm = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    console.log("Token for request:", token);
-
     useEffect(() => {
         const fetchProducts = async () => {
             try {
