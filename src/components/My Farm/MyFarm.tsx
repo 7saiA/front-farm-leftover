@@ -4,12 +4,14 @@ import type { Product } from "../../types/Product.ts";
 import { base_url } from "../../utils/constants.ts";
 import AddProductForm from "./AddProductForm.tsx";
 import "./MyFarm.css"
+import EditProductForm from "./EditProductForm.tsx";
 
 const MyFarm = () => {
     const { token } = useAppSelector((state) => state.auth);
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
     const deleteProduct = async (id: number) => {
         try {
@@ -23,6 +25,17 @@ const MyFarm = () => {
         }
     };
 
+    const handleEditProduct = async (updated: Product) => {
+        setProducts(prev =>
+            prev.map(p => (p.productId === updated.productId ? updated : p))
+        )
+        setEditingProduct(null);
+    }
+
+    const handleAddProduct = (newProduct: Product) => {
+        setProducts((prev) => [...prev, newProduct]);
+    };
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -34,10 +47,7 @@ const MyFarm = () => {
                     },
                 });
 
-                if (!res.ok) {
-                    throw new Error("Failed to fetch your products");
-                }
-
+                if (!res.ok) throw new Error("Failed to fetch your products");
                 const data = await res.json();
                 setProducts(data);
             } catch (err) {
@@ -50,18 +60,21 @@ const MyFarm = () => {
         fetchProducts();
     }, [token]);
 
-    const handleAddProduct = (newProduct: Product) => {
-        setProducts((prev) => [...prev, newProduct]);
-    };
-
     if (loading) return <p>Loading your products...</p>;
     if (error) return <p style={{ color: "red" }}>{error}</p>;
+
 
     return (
         <div className="my-farm-container">
             <h2>My Farm Products</h2>
             <AddProductForm onAdd={handleAddProduct} />
-
+            {editingProduct && (
+                <EditProductForm
+                    product={editingProduct}
+                    onUpdate={handleEditProduct}
+                    onCancel={() => setEditingProduct(null)}
+                />
+            )}
             <div className="farm-products-list">
                 {products.map((product) => (
                     <div key={product.productId} className="product-card">
@@ -69,6 +82,7 @@ const MyFarm = () => {
                         <p><strong>Price:</strong> {product.pricePerUnit} ₪ / {product.unit}</p>
                         <p><strong>Available:</strong> {product.availableQuantity}</p>
                         <button className="delete-btn" onClick={() => deleteProduct(product.productId)}>Delete</button>
+                        <button className={"edit-btn"} onClick={() => setEditingProduct(product)}>Edit</button>
                     </div>
                 ))}
             </div>
