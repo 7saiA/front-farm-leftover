@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
-import pageReducer from "../features/pageSlice.ts";
-import authReducer from '../features/authSlice';
+import pageReducer from "../features/page/pageSlice.ts";
+import authReducer from '../features/auth/authSlice.ts';
 
 
 export const store = configureStore({

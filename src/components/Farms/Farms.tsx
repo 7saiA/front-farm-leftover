@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {base_url, navItems} from "../../utils/constants.ts";
 import type {FarmDto} from "../../types/Farm.ts";
 import "./Farms.css"
-import {changePage, selectFarm} from "../../features/pageSlice.ts";
+import {changePage, selectFarm} from "../../features/page/pageSlice.ts";
 import {useAppDispatch} from "../../app/hooks.ts";
 
 const Farms = () => {

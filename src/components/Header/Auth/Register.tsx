@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
-import { registerUser } from "../../../features/authSlice.ts";
-import {changePage} from "../../../features/pageSlice.ts";
+import {registerUser} from "../../../features/auth/authThunks.ts";
+import {changePage} from "../../../features/page/pageSlice.ts";
 import {navItems} from "../../../utils/constants.ts";
 import {buttonBaseClass, inputClass} from "../../../utils/styles.ts";
 

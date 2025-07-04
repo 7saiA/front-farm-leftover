@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {changePage, clearSelectedFarm} from "../../features/pageSlice.ts";
+import {changePage, clearSelectedFarm} from "../../features/page/pageSlice.ts";
 import {navItems} from "../../utils/constants.ts";
 import FarmDetailsProducts from "./FarmDetailsProducts.tsx";
 import "./Farms.css"

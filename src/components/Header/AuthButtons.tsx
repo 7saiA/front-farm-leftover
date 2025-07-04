@@ -1,7 +1,7 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {changePage} from "../../features/pageSlice.ts";
+import {changePage} from "../../features/page/pageSlice.ts";
 import {navItems} from "../../utils/constants.ts";
-import {logout} from "../../features/authSlice.ts";
+import {logout} from "../../features/auth/authSlice.ts";
 
 const AuthButtons = () => {
     const dispatch = useAppDispatch();

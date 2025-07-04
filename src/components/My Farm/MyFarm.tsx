@@ -1,12 +1,14 @@
-import { useAppSelector } from "../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import { useEffect, useState } from "react";
 import type { Product } from "../../types/Product.ts";
 import { base_url } from "../../utils/constants.ts";
 import AddProductForm from "./AddProductForm.tsx";
 import "./MyFarm.css"
 import FarmProduct from "./FarmProduct.tsx";
+import {fetchWithAuth} from "../../utils/fetchWithAuth.ts";
 
 const MyFarm = () => {
+    const dispatch = useAppDispatch();
     const { token } = useAppSelector((state) => state.auth);
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
@@ -19,13 +21,12 @@ const MyFarm = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch(`${base_url}/products/myProducts`, {
+                const res = await fetchWithAuth(`${base_url}/products/myProducts`, {
                     method: 'GET',
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
-                });
+                },dispatch);
 
                 if (!res.ok) throw new Error("Failed to fetch your products");
                 const data = await res.json();
@@ -38,7 +39,7 @@ const MyFarm = () => {
         };
 
         fetchProducts();
-    }, [token]);
+    }, [token,dispatch]);
 
     if (loading) return <p>Loading your products...</p>;
     if (error) return <p style={{ color: "red" }}>{error}</p>;

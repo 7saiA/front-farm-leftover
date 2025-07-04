@@ -1,13 +1,14 @@
 import type { Product } from "../../types/Product";
 import {useState} from "react";
 import * as React from "react";
-import {useAppSelector} from "../../app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {base_url} from "../../utils/constants.ts";
 import FarmProductSelector from "./FarmProductSelector.tsx";
+import {fetchWithAuth} from "../../utils/fetchWithAuth.ts";
 
 const AddProductForm = ({ onAdd }: { onAdd: (product: Product) => void }) => {
-    const { token, login } = useAppSelector((state) => state.auth);
-
+    const {login } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
     const [productName, setProductName] = useState("");
     const [pricePerUnit, setPricePerUnit] = useState("");
     const [unit, setUnit] = useState("");
@@ -23,14 +24,13 @@ const AddProductForm = ({ onAdd }: { onAdd: (product: Product) => void }) => {
         }
 
         try {
-            const res = await fetch(`${base_url}/products/${login}`, {
+            const res = await fetchWithAuth(`${base_url}/products/${login}`, {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(productData),
-            });
+            },dispatch);
 
             if (!res.ok) throw new Error("Failed to add product");
 

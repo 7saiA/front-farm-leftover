@@ -1,6 +1,6 @@
-import {navItems} from "../utils/constants.ts";
+import {navItems} from "../../utils/constants.ts";
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {FarmDto} from "../types/Farm.ts";
+import type {FarmDto} from "../../types/Farm.ts";
 
 interface PageState {
     currentPage: string;

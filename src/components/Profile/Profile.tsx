@@ -1,9 +1,10 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {useEffect, useState} from "react";
-import {changePage} from "../../features/pageSlice.ts";
+import {changePage} from "../../features/page/pageSlice.ts";
 import {base_url, navItems} from "../../utils/constants.ts";
 import type {UserForProductDto} from "../../types/Product.ts";
 import "./Profile.css";
+import {fetchWithAuth} from "../../utils/fetchWithAuth.ts";
 
 const Profile = () => {
     const dispatch = useAppDispatch();
@@ -19,13 +20,9 @@ const Profile = () => {
             }
 
             try {
-                const response = await fetch(`${base_url}/users/profile`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
+                const response = await fetchWithAuth(`${base_url}/users/profile`, {
                     credentials: "include",
-                });
+                },dispatch);
 
                 if (!response.ok) {
                     throw new Error(`Error getting user profile: ${response.status}`);

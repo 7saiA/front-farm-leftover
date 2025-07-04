@@ -1,8 +1,9 @@
 import type { Product } from "../../types/Product.ts";
 import {base_url, productOptionsWithImages} from "../../utils/constants.ts";
-import { useAppSelector } from "../../app/hooks.ts";
 import { useState } from "react";
 import FarmProductSelector from "./FarmProductSelector.tsx";
+import {fetchWithAuth} from "../../utils/fetchWithAuth.ts";
+import {useAppDispatch} from "../../app/hooks.ts";
 
 interface FarmProductProps {
     product: Product;
@@ -11,9 +12,8 @@ interface FarmProductProps {
 }
 
 const FarmProduct = ({ product, onDelete, onUpdate }: FarmProductProps) => {
-    const { token } = useAppSelector((state) => state.auth);
     const [editMode, setEditMode] = useState(false);
-
+    const dispatch = useAppDispatch();
     const [productName, setProductName] = useState(product.productName);
     const [pricePerUnit, setPricePerUnit] = useState(product.pricePerUnit.toString());
     const [unit, setUnit] = useState(product.unit);
@@ -21,13 +21,12 @@ const FarmProduct = ({ product, onDelete, onUpdate }: FarmProductProps) => {
 
     const handleDelete = async () => {
         try {
-            const res = await fetch(`${base_url}/products/${product.productId}`, {
+            const res = await fetchWithAuth(`${base_url}/products/${product.productId}`, {
                 method: "DELETE",
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 }
-            });
+            },dispatch);
             if (!res.ok) throw new Error("Failed to delete");
             onDelete(product.productId);
         } catch (err) {
@@ -44,14 +43,13 @@ const FarmProduct = ({ product, onDelete, onUpdate }: FarmProductProps) => {
         };
 
         try {
-            const res = await fetch(`${base_url}/products/${product.productId}`, {
+            const res = await fetchWithAuth(`${base_url}/products/${product.productId}`, {
                 method: "PUT",
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(updatedProduct),
-            });
+            },dispatch);
 
             if (!res.ok) throw new Error("Failed to update product");
 

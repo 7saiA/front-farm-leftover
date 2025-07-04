@@ -1,5 +1,5 @@
 import {useAppDispatch} from "../../../app/hooks.ts";
-import {changePage} from "../../../features/pageSlice.ts";
+import {changePage} from "../../../features/page/pageSlice.ts";
 
 interface Props {
     itemTitle: string

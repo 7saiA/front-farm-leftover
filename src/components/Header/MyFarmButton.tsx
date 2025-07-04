@@ -1,6 +1,6 @@
 import "./Header.css";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {changePage} from "../../features/pageSlice.ts";
+import {changePage} from "../../features/page/pageSlice.ts";
 import {navItems} from "../../utils/constants.ts";
 
 const MyFarmButton = () => {
