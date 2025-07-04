@@ -1,10 +1,9 @@
 export interface UserForProductDto {
     login: string;
-    name: string;
     email: string;
     phone: string;
     role: string;
-    farmName: string;
+    farmName: string | null;
     city: string | null;
     street: string | null;
 }

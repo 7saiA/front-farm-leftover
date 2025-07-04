@@ -38,7 +38,8 @@
 }
 
 .add-product-form input,
-.product-form input {
+.product-form input,
+.product-form select {
     width: 100%;
     box-sizing: border-box;
     padding: 0.75rem 1rem;
@@ -117,4 +118,117 @@
     margin-bottom: 1rem;
     color: #3e779a;
     font-weight: 600;
+}
+
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.product-form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Зелёная кнопка Save */
+.save-btn {
+    background-color: #34a853;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #2c8d47;
+}
+
+/* Красная кнопка Cancel */
+.cancel-btn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #c9302c;
+}
+
+.custom-select {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 1rem;
+}
+
+.selected {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.selected img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+}
+
+.dropdown {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 0.25rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.dropdown li {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.dropdown li:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+}
+
+.product-preview-image {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }

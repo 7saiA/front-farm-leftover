@@ -9,15 +9,22 @@ const ProductCardBack = ({product, onFlip}: Props) => {
     return (
         /* Back side */
         <div className="card-back">
-    <div className="farm-header">
-    <strong onClick={() => onFlip(product.productId)} className="product-name-back">
-        {product.productName}
-        </strong>
+            <div className="farm-header">
+                <button
+                    className="product-name-back-button"
+                    onClick={() => {
+                        onFlip(product.productId)
+                    }}
+                >
+                    {product.productName}
+                </button>
+            </div>
+            <h2>{product.userForProductDto.farmName}</h2>
+            <p><strong>City:</strong> {product.userForProductDto.city ?? "N/A"}</p>
+            <p><strong>Street:</strong> {product.userForProductDto.street ?? "N/A"}</p>
+            <p><strong>Email:</strong> {product.userForProductDto.email}</p>
+            <p><strong>Phone:</strong> {product.userForProductDto.phone}</p>
         </div>
-        <h4>{product.userForProductDto.login}</h4>
-        <p><strong>City:</strong> {product.userForProductDto.city ?? "nope"}</p>
-    <p><strong>Street:</strong> {product.userForProductDto.street ?? "nope"}</p>
-    </div>
     )
 }
 

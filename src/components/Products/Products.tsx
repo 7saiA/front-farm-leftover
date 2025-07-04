@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
-import { base_url } from "../../utils/constants.ts";
+import {useEffect, useState} from "react";
+import {base_url} from "../../utils/constants.ts";
 import "./Product.css";
 import ProductsList from "./ProductsList.tsx";
 import type {Product} from "../../types/Product.ts";
+import ProductSelector from "./ProductSelector.tsx";
 
 const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [flippedId, setFlippedId] = useState<number | null>(null);
+    const [searchNameProduct, setSearchNameProduct] = useState<string>("");
 
     useEffect(() => {
         (async () => {
@@ -29,10 +31,11 @@ const Products = () => {
     };
 
 
-
     return (
-        <div>
-            <h2 style={{ textAlign: "center", marginTop: "2rem" }}>Products List</h2>
+        <div className="products-page-container">
+            <form className="product-form">
+                <ProductSelector value={searchNameProduct} onChange={setSearchNameProduct}/>
+            </form>
 
             {loading ? (
                 <p>Loading...</p>
@@ -41,6 +44,7 @@ const Products = () => {
             ) : (
                 <ProductsList
                     products={products}
+                    searchNameProduct={searchNameProduct}
                     flippedId={flippedId}
                     toggleFlip={toggleFlip}
                 />

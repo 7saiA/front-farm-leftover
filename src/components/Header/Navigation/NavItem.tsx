@@ -20,6 +20,10 @@ const NavItem = ({itemTitle}: Props) => {
         return null;
     }
 
+    if ("FarmDetails".includes(itemTitle)) {
+        return null;
+    }
+
     return (
         <li>
             <button onClick={() => dispatch(changePage(itemTitle))}>
