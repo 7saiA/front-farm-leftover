@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks.ts";
 import {registerUser} from "../../../features/auth/authThunks.ts";
-import {changePage} from "../../../features/page/pageSlice.ts";
-import {navItems} from "../../../utils/constants.ts";
 import {buttonBaseClass, inputClass} from "../../../utils/styles.ts";
+import {useNavigate} from "react-router-dom";
 
 const Register = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { loading, error } = useAppSelector((state) => state.auth);
 
     const [isFarmer, setIsFarmer] = useState(false);
@@ -44,7 +44,7 @@ const Register = () => {
 
         dispatch(registerUser(dataToSend))
             .unwrap()
-            .then(() => dispatch(changePage(navItems[5])))
+            .then(() => navigate("/profile"))
             .catch((err) => console.error("Registration failed", err));
     };
 

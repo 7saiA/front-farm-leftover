@@ -18,7 +18,7 @@ const ProductCardFront = ({product, onFlip}: Props) => {
                     className="product-preview-image"
                 />
             </div>
-            <p><strong>Price:</strong> {product.pricePerUnit} per {product.unit}</p>
+            <p><strong>Price:</strong> {product.pricePerUnit} ₪ / {product.unit}</p>
             <p><strong>Available:</strong> {product.availableQuantity}</p>
             <div className="farm-name-button-wrapper">
             <span className="farm-name-label">Farm Name: </span>

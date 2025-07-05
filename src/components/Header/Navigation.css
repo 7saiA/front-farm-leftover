@@ -8,22 +8,28 @@
 .nav-list {
     display: flex;
     gap: 0.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
+.nav-list li a,
 .nav-list li button,
-.nav-list li a {
-    background-color: #fdd835; /* приятный жёлтый */
+.nav-button-link {
+    background-color: #fdd835;
     color: #333;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 9999px; /* максимально скруглённые */
+    border-radius: 9999px;
     font-weight: bold;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
 }
 
+.nav-list li a:hover,
 .nav-list li button:hover,
-.nav-list li a:hover {
-    background-color: #fbc02d; /* чуть темнее при наведении */
+.nav-button-link:hover {
+    background-color: #fbc02d;
     transform: scale(1.05);
 }

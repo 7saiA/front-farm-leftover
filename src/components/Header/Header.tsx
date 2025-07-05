@@ -1,4 +1,4 @@
-import Navigation from "./Navigation/Navigation.tsx";
+import Navigation from "./Navigation.tsx";
 import "./Header.css";
 import AuthButtons from "./AuthButtons.tsx";
 import MyFarmButton from "./MyFarmButton.tsx";

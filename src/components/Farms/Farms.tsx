@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react";
-import {base_url, navItems} from "../../utils/constants.ts";
+import {base_url} from "../../utils/constants.ts";
 import type {FarmDto} from "../../types/Farm.ts";
 import "./Farms.css"
-import {changePage, selectFarm} from "../../features/page/pageSlice.ts";
-import {useAppDispatch} from "../../app/hooks.ts";
+import {useNavigate} from "react-router-dom";
 
 const Farms = () => {
-    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [farms, setFarms] = useState<FarmDto[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -47,10 +46,7 @@ const Farms = () => {
                         >
                             <button
                                 className="greenButton"
-                                onClick={() => {
-                                    dispatch(selectFarm(farm));
-                                    dispatch(changePage(navItems[7]));
-                                }}
+                                onClick={() => {navigate(`/farms/${farm.login}`);}}
                             >
                                 {farm.farmName}
                             </button>

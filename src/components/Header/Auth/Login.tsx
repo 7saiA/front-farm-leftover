@@ -1,12 +1,12 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
 import {useState} from "react";
 import {loginUser} from "../../../features/auth/authThunks.ts";
-import {changePage} from "../../../features/page/pageSlice.ts";
-import {navItems} from "../../../utils/constants.ts";
 import {buttonBaseClass, inputClass} from "../../../utils/styles.ts";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const {loading, error} = useAppSelector((state) => state.auth);
 
     const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const Login = () => {
         e.preventDefault();
         dispatch(loginUser(formData))
             .unwrap()
-            .then(() => dispatch(changePage(navItems[5])))
+            .then(() => navigate("/profile"))
             .catch((err) => console.error("Login failed", err));
     };
 

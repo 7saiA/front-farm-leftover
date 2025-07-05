@@ -1,15 +1,15 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {changePage} from "../../features/page/pageSlice.ts";
-import {navItems} from "../../utils/constants.ts";
 import {logout} from "../../features/auth/authSlice.ts";
+import {useNavigate} from "react-router-dom";
 
 const AuthButtons = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const {token} = useAppSelector(state => state.auth);
 
     const handleLogout = () => {
         dispatch(logout());
-        dispatch(changePage(navItems[0])); // возвращаем на Home
+        navigate("/home"); // возвращаем на Home
     };
 
     return (
@@ -19,16 +19,16 @@ const AuthButtons = () => {
                     <button onClick={handleLogout}>
                         Logout
                     </button>
-                    <button onClick={() => dispatch(changePage(navItems[5]))}>
+                    <button onClick={() => navigate("/profile")}>
                         My Profile
                     </button>
                 </>
             ) : (
                 <>
-                    <button onClick={() => dispatch(changePage(navItems[3]))}>
+                    <button onClick={() => navigate("/register")}>
                         Register
                     </button>
-                    <button onClick={() => dispatch(changePage(navItems[4]))}>
+                    <button onClick={() => navigate("/login")}>
                         Sign In
                     </button>
                 </>

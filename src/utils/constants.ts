@@ -1,5 +1,4 @@
 export const base_url = 'http://localhost:8080';
-export const navItems = ['Home', 'Products', 'Farms', 'Register', 'Sing In', 'Profile', 'My Farm', 'FarmDetails'];
 export const productOptionsWithImages = [
     { name: "Tomato", image: "/images/products/tomato.jpg" },
     { name: "Cucumber", image: "/images/products/cucumber.jpg" },

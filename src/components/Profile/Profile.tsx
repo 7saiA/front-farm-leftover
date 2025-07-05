@@ -1,21 +1,20 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {useEffect, useState} from "react";
-import {changePage} from "../../features/page/pageSlice.ts";
-import {base_url, navItems} from "../../utils/constants.ts";
+import {base_url} from "../../utils/constants.ts";
 import type {UserForProductDto} from "../../types/Product.ts";
 import "./Profile.css";
 import {fetchWithAuth} from "../../utils/fetchWithAuth.ts";
+import {useNavigate} from "react-router-dom";
 
 const Profile = () => {
     const dispatch = useAppDispatch();
-    const {login, token, role} = useAppSelector(state => state.auth);
+    const navigate = useNavigate();
+    const {login, token} = useAppSelector(state => state.auth);
     const [userData, setUserData] = useState<UserForProductDto | null>(null);
-    console.log("TOKEN:", token);
-    console.log("ROLE:", role);
     useEffect(() => {
         const loadProfile = async () => {
             if (!token || !login) {
-                dispatch(changePage(navItems[4]));
+                navigate("/login");
                 return;
             }
 

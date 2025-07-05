@@ -1,15 +1,14 @@
 import "./Header.css";
-import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {changePage} from "../../features/page/pageSlice.ts";
-import {navItems} from "../../utils/constants.ts";
+import {useAppSelector} from "../../app/hooks.ts";
+import {useNavigate} from "react-router-dom";
 
 const MyFarmButton = () => {
-    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const {token, role} = useAppSelector(state => state.auth);
     return (
         <>
             {token && role === "FARM" && (
-                <button onClick={() => dispatch(changePage(navItems[6]))}>
+                <button onClick={() => navigate("/my-farm")}>
                     My Farm
                 </button>
             )}

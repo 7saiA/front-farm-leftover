@@ -29,6 +29,21 @@
     background-color: #155a9c;
 }
 
+.delete-btn {
+    background-color: #d21919; /* blue */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #9c1515;
+}
+
 .add-product-form,
 .product-form {
     display: grid;

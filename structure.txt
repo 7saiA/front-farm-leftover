@@ -4,6 +4,27 @@
 ./tsconfig.app.json
 ./README.md
 ./public
+./public/images
+./public/images/products
+./public/images/products/zucchini.jpg
+./public/images/products/potato.jpg
+./public/images/products/carrot.jpg
+./public/images/products/onion.jpg
+./public/images/products/tomato.jpg
+./public/images/products/pepper.jpg
+./public/images/products/watermelon.jpg
+./public/images/products/orange.jpg
+./public/images/products/apple.jpg
+./public/images/products/garlic.jpg
+./public/images/products/melon.jpg
+./public/images/products/cucumber.jpg
+./public/images/products/banana.jpg
+./public/images/products/lemon.jpg
+./public/images/products/spinach.jpg
+./public/images/products/eggplant.jpg
+./public/images/products/strawberry.jpg
+./public/images/products/lettuce.jpg
+./public/images/products/pumpkin.jpg
 ./public/vite.svg
 ./package-lock.json
 ./package.json
@@ -21,28 +42,45 @@
 ./src/main.tsx
 ./src/types
 ./src/types/Product.ts
+./src/types/Farm.ts
 ./src/app
 ./src/app/hooks.ts
 ./src/app/store.ts
 ./src/features
-./src/features/authSlice.ts
-./src/features/pageSlice.ts
+./src/features/page
+./src/features/page/pageSlice.ts
+./src/features/auth
+./src/features/auth/authSlice.ts
+./src/features/auth/authThunks.ts
 ./src/App.css
 ./src/utils
-./src/utils/context.ts
+./src/utils/styles.ts
 ./src/utils/constants.ts
+./src/utils/fetchWithAuth.ts
 ./src/index.css
 ./src/components
 ./src/components/Home
 ./src/components/Home/Home.css
 ./src/components/Home/Home.tsx
+./src/components/My Farm
+./src/components/My Farm/FarmProduct.tsx
+./src/components/My Farm/FarmProductSelector.tsx
+./src/components/My Farm/MyFarm.css
+./src/components/My Farm/MyFarm.tsx
+./src/components/My Farm/AddProductForm.tsx
 ./src/components/Products
 ./src/components/Products/ProductCardFront.tsx
 ./src/components/Products/ProductCards.tsx
 ./src/components/Products/ProductCardBack.tsx
 ./src/components/Products/Product.css
 ./src/components/Products/ProductsList.tsx
+./src/components/Products/ProductSelector.tsx
 ./src/components/Products/Products.tsx
+./src/components/Farms
+./src/components/Farms/FarmDetailsProducts.tsx
+./src/components/Farms/FarmDetails.tsx
+./src/components/Farms/Farms.css
+./src/components/Farms/Farms.tsx
 ./src/components/Profile
 ./src/components/Profile/Profile.tsx
 ./src/components/Profile/Profile.css
@@ -50,7 +88,6 @@
 ./src/components/Main/Main.tsx
 ./src/components/Header
 ./src/components/Header/Auth
-./src/components/Header/Auth/Register.css
 ./src/components/Header/Auth/Login.tsx
 ./src/components/Header/Auth/Register.tsx
 ./src/components/Header/Navigation
@@ -59,6 +96,7 @@
 ./src/components/Header/Navigation/NavItem.tsx
 ./src/components/Header/AuthButtons.tsx
 ./src/components/Header/Header.tsx
+./src/components/Header/MyFarmButton.tsx
 ./src/components/Header/Header.css
 ./src/vite-env.d.ts
 ./src/assets
@@ -67,3 +105,4 @@
 ./src/assets/field-sky2.jpg
 ./src/assets/field-sky3.jpg
 ./src/assets/react.svg
+./src/assets/sunriseLogo.jpg
