@@ -22,7 +22,7 @@ interface FarmDto {
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-       baseUrl: "http://localhost:8080"
+       baseUrl: "http://localhost:8080/users"
     }),
     refetchOnFocus: true,
     tagTypes: ['User'],

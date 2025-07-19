@@ -5,7 +5,6 @@ const Product = () => {
     const [sortBy, setSortBy] = useState("newest");
     const { data, error, isLoading } = useGetProductsQuery({sort: sortBy});
 
-
     if (isLoading) {
         return (
             <div className="grid place-items-center h-screen">

@@ -22,21 +22,21 @@ interface ProductDto {
 export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8080/"
+        baseUrl: "http://localhost:8080/products"
     }),
     refetchOnFocus: true,
     tagTypes: ['Product'],
     endpoints: (builder) => ({
         getProducts: builder.query<ProductDto[], { sort?: string }>({
             query: ({sort = 'newest'} = {}) => ({
-                url: 'products',
+                url: '/all-products',
                 params: {sort},
                 providesTags: ['Product'],
             })
         }),
         addProduct: builder.mutation<void, { farmId: string; product: ProductDto }>({
             query: ({ farmId, product }) => ({
-                url: `products/${farmId}`,
+                url: `/${farmId}`,
                 method: "POST",
                 body: product,
                 invalidatesTags: ['Product']
