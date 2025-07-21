@@ -1,4 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {clearCredentials, setCredentials} from "../features/authSlice.ts";
+import type {RootState} from "../app/store.ts";
 
 interface UserDto {
     login: string;
@@ -11,6 +13,12 @@ interface UserDto {
     street: string;
 }
 
+export interface AuthResponse {
+    accessToken: string;
+    refreshToken: string | null;
+    userDto: UserDto;
+}
+
 interface UserRegisterDto {
     login: string;
     email: string;
@@ -21,53 +29,87 @@ interface UserRegisterDto {
     street?: string;
 }
 
-interface LoginDto {
+interface LoginPasswordDto {
     login: string;
     password: string;
 }
+
 
 export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8080/auth",
+        credentials: "include",
         prepareHeaders: (headers, { getState }) => {
-            const auth = (getState() as any).auth;
-            if (auth?.credentials) {
-                headers.set('Authorization', `Basic ${auth.credentials}`);
+            headers.set("Content-Type", "application/json");
+            const { accessToken } = (getState() as RootState).auth;
+            if (accessToken) {
+                headers.set("Authorization", `Bearer ${accessToken}`);
             }
+
             return headers;
         }
     }),
-    tagTypes: ['Auth'],
     endpoints: (builder) => ({
-        login: builder.mutation<UserDto, LoginDto>({
-            query: (credentials) => ({
-                url: "/sign-in",
-                method: "POST",
-                headers: {
-                    'Authorization': `Basic ${btoa(`${credentials.login}:${credentials.password}`)}`
-                },
-                body: credentials
-            }),
-            invalidatesTags: ['Auth'],
-        }),
-        getCurrentUser: builder.query<UserDto, void>({
-            query: () => "/profile",
-            providesTags: ['Auth'],
-        }),
         register: builder.mutation<UserDto, UserRegisterDto>({
-            query: (userData) => ({
-                url: "/register",
-                method: "POST",
-                body: userData,
+            query: (userRegisterDto) => ({
+                url: '/register',
+                method: 'POST',
+                body: userRegisterDto,
             }),
-            invalidatesTags: ['Auth'],
         }),
-    }),
+        signIn: builder.mutation<AuthResponse, LoginPasswordDto>({
+            query: (loginPasswordDto) => ({
+                url: '/sign-in',
+                method: 'POST',
+                body: loginPasswordDto,
+            }),
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(setCredentials({
+                        accessToken: data.accessToken,
+                        user: data.userDto
+                    }));
+                } catch (err) {
+                    console.error("Sign-in failed:", err);
+                }
+            }
+        }),
+        refreshToken: builder.mutation<AuthResponse, void>({
+            query: () => ({
+                url: '/refresh-token',
+                method: 'POST',
+            }),
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(setCredentials({
+                        accessToken: data.accessToken,
+                        user: data.userDto
+                    }));
+                } catch (err) {
+                    console.error("Refresh token failed:", err);
+                    dispatch(clearCredentials());
+                }
+            }
+        }),
+        logout: builder.mutation<void, void>({
+            query: () => ({
+                url: "/logout",
+                method: "POST",
+            }),
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    dispatch(clearCredentials());
+                } catch (err) {
+                    console.error("Logout failed:", err);
+                    dispatch(clearCredentials());
+                }
+            }
+        }),
+    })
 });
 
-export const {
-    useLoginMutation,
-    useGetCurrentUserQuery,
-    useRegisterMutation
-} = authApi;
+export const {useRegisterMutation, useSignInMutation, useRefreshTokenMutation, useLogoutMutation} = authApi;

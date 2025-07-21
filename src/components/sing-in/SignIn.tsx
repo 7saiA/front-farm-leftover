@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLoginMutation } from '../../service/authApi';
+import {useLogoutMutation, useRefreshTokenMutation, useSignInMutation} from '../../service/authApi';
 import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
@@ -8,7 +8,9 @@ const SignIn = () => {
         password: ''
     });
 
-    const [loginUser, { isLoading, error }] = useLoginMutation();
+    const [loginUser, { isLoading, error }] = useSignInMutation();
+    const [refreshToken] = useRefreshTokenMutation();
+    const [logout] = useLogoutMutation();
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,6 +122,46 @@ const SignIn = () => {
                         </button>
                     </div>
                 </form>
+
+                <div className="text-center">
+                    <button
+                        type="button"
+                        onClick={async () => {
+                            try {
+                                const response = await refreshToken().unwrap();
+                                console.log("New access token:", response.accessToken);
+                                alert("Refresh successful. Check console.");
+                            } catch (err) {
+                                console.error("Refresh token failed", err);
+                                alert("Refresh failed");
+                            }
+                        }}
+                        className="mt-4 text-sm font-medium text-blue-600 hover:text-blue-500"
+                    >
+                        Test Refresh Token
+                    </button>
+                </div>
+
+                <div className="text-center">
+                    <button
+                        type="button"
+                        onClick={async () => {
+                            try {
+                                await logout().unwrap();
+                                console.log("Logged out successfully");
+                                alert("Logout successful.");
+                                // optionally redirect after logout
+                                navigate('/sign-in');
+                            } catch (err) {
+                                console.error("Logout failed", err);
+                                alert("Logout failed");
+                            }
+                        }}
+                        className="mt-4 text-sm font-medium text-red-600 hover:text-red-500"
+                    >
+                        Logout
+                    </button>
+                </div>
 
                 <div className="text-center">
                     <p className="text-sm text-gray-600">

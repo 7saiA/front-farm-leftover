@@ -28,6 +28,7 @@ const Product = () => {
             <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as string)}
+                className={"flex flex-start left-2 mt-2 w-48 border-2 border-black  bg-gray-100 rounded-md shadow-lg py-1 mx-2"}
             >
                 <option value="newest">Newest</option>
                 <option value="price-low-high">Low to High</option>
@@ -40,11 +41,8 @@ const Product = () => {
                 <ul>
                     {data.map((product) => (
                         <li key={product.productId}>
-                            {product.productName} - ${product.pricePerUnit}
-                            {product.pricePerUnit} - ${product.pricePerUnit}
-                            {product.unit} - ${product.unit}
-                            {product.availableQuantity} - ${product.availableQuantity}
-                            {product.createdAt} - ${product.createdAt}
+                            {product.productName} - ${product.pricePerUnit}/{product.unit}
+                            (Available: {product.availableQuantity}, Added: {new Date(product.createdAt).toLocaleDateString()})
                         </li>
                     ))}
                 </ul>

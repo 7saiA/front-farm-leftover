@@ -1,4 +1,4 @@
-import {createSlice, type PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface UserDto {
     login: string;
@@ -12,13 +12,13 @@ interface UserDto {
 }
 
 interface AuthState {
-    credentials: string | null;
-    user: UserDto | null;
+    accessToken: string | null;
+    user: UserDto | null;  // Remove refreshToken from state
     isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
-    credentials: null,
+    accessToken: null,
     user: null,
     isAuthenticated: false,
 };
@@ -27,21 +27,24 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setCredentials: (state, action: PayloadAction<{login: string, password: string}>) => {
-            const { login, password } = action.payload;
-            state.credentials = btoa(`${login}:${password}`);
+        setCredentials: (
+            state,
+            action: PayloadAction<{
+                accessToken: string;
+                user: UserDto;  // No refreshToken here
+            }>
+        ) => {
+            state.accessToken = action.payload.accessToken;
+            state.user = action.payload.user;
             state.isAuthenticated = true;
         },
         clearCredentials: (state) => {
-            state.credentials = null;
+            state.accessToken = null;
             state.user = null;
             state.isAuthenticated = false;
         },
-        setUser: (state, action: PayloadAction<UserDto>) => {
-            state.user = action.payload;
-        }
     },
 });
 
-export const { setCredentials, clearCredentials, setUser } = authSlice.actions;
+export const { setCredentials, clearCredentials } = authSlice.actions;
 export default authSlice.reducer;
