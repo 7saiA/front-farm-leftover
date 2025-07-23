@@ -1,5 +1,6 @@
 import {useGetProductsQuery} from "../../service/productsApi.ts";
 import {useState} from "react";
+import ProductList from "../product-list/ProductList.tsx";
 
 const Product = () => {
     const [sortBy, setSortBy] = useState("newest");
@@ -38,14 +39,7 @@ const Product = () => {
             </select>
             <h1>Products</h1>
             {data && data.length > 0 ? (
-                <ul>
-                    {data.map((product) => (
-                        <li key={product.productId}>
-                            {product.productName} - ${product.pricePerUnit}/{product.unit}
-                            (Available: {product.availableQuantity}, Added: {new Date(product.createdAt).toLocaleDateString()})
-                        </li>
-                    ))}
-                </ul>
+                <ProductList products={data}/>
             ) : (
                 <p>No products found</p>
             )}

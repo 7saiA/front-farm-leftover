@@ -9,7 +9,7 @@ interface ProductForFarmDto {
     createdAt: string;
 }
 
-interface FarmDto {
+export interface FarmDto {
     login: string;
     email: string;
     phone: string;

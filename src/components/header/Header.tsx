@@ -1,6 +1,6 @@
 import { UserCircleIcon } from '@heroicons/react/24/solid';
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,32 +19,41 @@ const Header = () => {
         navigate('/register');
         setIsMenuOpen(false);
     };
+
     return (
         <header className="bg-white shadow-md sticky top-0">
             <nav className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
                 <div className="flex items-center space-x-12">
-                    <a href="/"
-                       className="text-2xl font-bold text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline">
+                    <Link
+                        to="/"
+                        className="text-2xl font-bold text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline"
+                    >
                         LeftOver
-                    </a>
+                    </Link>
                     <ul className="flex space-x-8">
                         <li>
-                            <a href="/products"
-                               className="text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline">
+                            <Link
+                                to="/products"
+                                className="text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline"
+                            >
                                 Products
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/farms"
-                               className="text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline">
+                            <Link
+                                to="/farms"
+                                className="text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline"
+                            >
                                 Farms
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/contact"
-                               className="text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline">
+                            <Link
+                                to="/contact"
+                                className="text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline"
+                            >
                                 Contact
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -81,8 +90,6 @@ const Header = () => {
                 </div>
             </nav>
         </header>
-
-
     );
 };
 

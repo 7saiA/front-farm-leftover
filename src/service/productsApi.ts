@@ -9,7 +9,7 @@ interface UserForProductDto{
     street: string;
 }
 
-interface ProductDto {
+export interface ProductDto {
     productId: number;
     productName: string;
     pricePerUnit: number;

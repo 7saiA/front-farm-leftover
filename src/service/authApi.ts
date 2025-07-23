@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {clearCredentials, setCredentials} from "../features/authSlice.ts";
 import type {RootState} from "../app/store.ts";
 
-interface UserDto {
+export interface UserDto {
     login: string;
     email: string;
     password: string;
@@ -19,7 +19,7 @@ export interface AuthResponse {
     userDto: UserDto;
 }
 
-interface UserRegisterDto {
+export interface UserRegisterDto {
     login: string;
     email: string;
     password: string;
@@ -29,7 +29,7 @@ interface UserRegisterDto {
     street?: string;
 }
 
-interface LoginPasswordDto {
+export interface LoginPasswordDto {
     login: string;
     password: string;
 }
