@@ -26,7 +26,7 @@ const Header = () => {
                 <div className="flex items-center space-x-12">
                     <Link
                         to="/"
-                        className="text-2xl font-bold text-gray-800 hover:text-green-500 transition-colors duration-300 no-underline"
+                        className="text-2xl font-bold text-gray-800 hover:text-green-500 transition-color duration-300 no-underline"
                     >
                         LeftOver
                     </Link>

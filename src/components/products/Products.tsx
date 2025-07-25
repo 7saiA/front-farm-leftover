@@ -25,7 +25,7 @@ const Product = () => {
         );
     }
     return (
-        <div className="container">
+        <div className="container-fluid">
             <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as string)}
@@ -37,7 +37,9 @@ const Product = () => {
                 <option value="a-z">A-Z</option>
                 <option value="z-a">Z-A</option>
             </select>
-            <h1>Products</h1>
+            <h1 className={"flex items-center justify-center text-2xl font-bold animate-pulse"}>
+                Products List
+            </h1>
             {data && data.length > 0 ? (
                 <ProductList products={data}/>
             ) : (
