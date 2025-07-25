@@ -85,7 +85,26 @@ const Product = () => {
                             label="filter"
                             color={"secondary"}
                             sx={{
-                                backgroundColor: 'purple.500'
+                                textAlign: "center",
+                                borderRadius: 2,
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: 'black', // Черная рамка по умолчанию
+                                },
+                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: 'purple.200', // Светло-фиолетовый при наведении
+                                },
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: 'purple.500', // Фиолетовый при фокусе
+                                },
+                                '&.Mui-focused': {
+                                    backgroundColor: 'rgba(156, 39, 176, 0.08)', // Легкий фиолетовый фон при фокусе
+                                },
+                                '& .MuiSelect-select': {
+                                    color: 'black', // Черный текст
+                                },
+                                '& .MuiSvgIcon-root': {
+                                    color: 'black', // Черная иконка стрелки
+                                },
                             }}
                         >
                             <MenuItem value="newest">
