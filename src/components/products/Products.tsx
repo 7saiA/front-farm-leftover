@@ -1,16 +1,38 @@
 import {useGetProductsQuery} from "../../service/productsApi.ts";
 import {useState} from "react";
 import ProductList from "../product-list/ProductList.tsx";
+import {
+    Box,
+    CircularProgress, Fade,
+    FormControl,
+    MenuItem, Paper,
+    Select,
+    type SelectChangeEvent,
+    Typography
+} from "@mui/material";
 
 const Product = () => {
     const [sortBy, setSortBy] = useState("newest");
-    const { data, error, isLoading } = useGetProductsQuery({sort: sortBy});
+    const {data, error, isLoading} = useGetProductsQuery({sort: sortBy});
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setSortBy(event.target.value);
+    };
 
     if (isLoading) {
         return (
-            <div className="grid place-items-center h-screen">
-                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '80vh',
+                p: 3,
+                textAlign: 'center'
+            }}>
+                <CircularProgress color="secondary"
+                                  size={"3rem"}/>
+            </Box>
         );
     }
 
@@ -19,33 +41,77 @@ const Product = () => {
             ? error.data as string
             : 'An error occurred';
         return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="text-2xl font-bold animate-pulse">Error... {errorMessage}</div>
-            </div>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '80vh',
+                p: 3,
+                textAlign: 'center'
+            }}>
+                <Typography color={"secondary"}
+                            variant={"h1"}>
+                    Error: {errorMessage}
+                </Typography>
+            </Box>
         );
     }
     return (
-        <div className="container-fluid">
-            <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as string)}
-                className={"flex flex-start left-2 mt-2 w-48 border-2 border-black  bg-gray-100 rounded-md shadow-lg py-1 mx-2"}
-            >
-                <option value="newest">Newest</option>
-                <option value="price-low-high">Low to High</option>
-                <option value="price-high-low">High to Low</option>
-                <option value="a-z">A-Z</option>
-                <option value="z-a">Z-A</option>
-            </select>
-            <h1 className={"flex items-center justify-center text-2xl font-bold animate-pulse"}>
-                Products List
-            </h1>
+        <Box sx={{
+            pt: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            mx: 4,
+            gap: 4,
+        }}>
+            <Fade in={true} timeout={1000}>
+                <Paper elevation={8}
+                       sx={{
+                           border: 1,
+                           borderColor: "purple",
+                           borderRadius: 2
+                       }}>
+                    <FormControl variant="standard"
+                                 sx={{
+                                     m: 1,
+                                     minWidth: 120
+                                 }}>
+                        <Select
+                            labelId="id"
+                            id="id"
+                            value={sortBy}
+                            onChange={handleChange}
+                            label="filter"
+                            color={"secondary"}
+                            sx={{
+                                backgroundColor: 'purple.500'
+                            }}
+                        >
+                            <MenuItem value="newest">
+                                <em>Newest</em>
+                            </MenuItem>
+                            <MenuItem value={"price-low-high"}>Low to High</MenuItem>
+                            <MenuItem value={"price-high-low"}>High to Low</MenuItem>
+                            <MenuItem value={"a-z"}>A-Z</MenuItem>
+                            <MenuItem value={"z-a"}>Z-A</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Paper>
+            </Fade>
+            <Fade in={true} timeout={1000}>
+                <Typography variant="h4"
+                            align="center"
+                            sx={{mt: 2}}>
+                    Products List
+                </Typography>
+            </Fade>
             {data && data.length > 0 ? (
                 <ProductList products={data}/>
             ) : (
                 <p>No products found</p>
             )}
-        </div>
+        </Box>
     );
 };
 
