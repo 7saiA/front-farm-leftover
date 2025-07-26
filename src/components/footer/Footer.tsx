@@ -4,7 +4,7 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
 
                 <div className="text-sm font-medium">
-                    © {new Date().getFullYear()} LeftOver. All rights reserved.
+                    © {new Date().getFullYear()} LeftOver. All rights are not reserved.
                 </div>
 
                 <div className="flex space-x-6 text-sm">

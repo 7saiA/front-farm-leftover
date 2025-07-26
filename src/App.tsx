@@ -7,6 +7,7 @@ import Farms from "./components/farms/Farms.tsx";
 import Footer from "./components/footer/Footer.tsx";
 import SignIn from "./components/sing-in/SignIn.tsx";
 import Register from "./components/register/Register.tsx";
+import SearchResultsPage from "./components/search-result/SearchResultPage.tsx";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                 <Route path={"/farms"} element={<Farms />} />
                 <Route path={"/sign-in"} element={<SignIn/>} />
                 <Route path={"/register"} element={<Register/>}/>
+                <Route path="/search" element={<SearchResultsPage />} />
             </Routes>
             <Footer/>
         </BrowserRouter>

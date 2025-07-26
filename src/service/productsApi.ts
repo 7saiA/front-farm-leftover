@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type {FarmDto} from "./userApi.ts";
 
 interface UserForProductDto{
     login: string;
@@ -40,9 +41,18 @@ export const productsApi = createApi({
                 method: "POST",
                 body: product,
                 invalidatesTags: ['Product']
-            }),
+            })
+        }),
+        search: builder.query<{
+            products: ProductDto[];
+            farms: FarmDto[];
+        },string>({
+            query: (query) => ({
+                url: "/search",
+                params: {query}
+            })
         })
     })
 });
 
-export const { useGetProductsQuery, useAddProductMutation } = productsApi;
+export const { useGetProductsQuery, useAddProductMutation, useSearchQuery } = productsApi;

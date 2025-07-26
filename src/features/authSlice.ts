@@ -13,7 +13,7 @@ interface UserDto {
 
 interface AuthState {
     accessToken: string | null;
-    user: UserDto | null;  // Remove refreshToken from state
+    user: UserDto | null;
     isAuthenticated: boolean;
 }
 
