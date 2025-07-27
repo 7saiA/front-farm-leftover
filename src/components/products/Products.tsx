@@ -3,13 +3,15 @@ import {useState} from "react";
 import ProductList from "../product-list/ProductList.tsx";
 import {
     Box,
-    CircularProgress, Fade,
+    Fade,
     FormControl,
     MenuItem, Paper,
     Select,
     type SelectChangeEvent,
     Typography
 } from "@mui/material";
+import IsLoading from "../is-loading-page/IsLoading.tsx";
+import ErrorPage from "../error-page/ErrorPage.tsx";
 
 const Product = () => {
     const [sortBy, setSortBy] = useState("newest");
@@ -20,42 +22,14 @@ const Product = () => {
     };
 
     if (isLoading) {
-        return (
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: '80vh',
-                p: 3,
-                textAlign: 'center'
-            }}>
-                <CircularProgress color="secondary"
-                                  size={"3rem"}/>
-            </Box>
-        );
+        return <IsLoading/>
     }
 
     if (error) {
         const errorMessage = 'status' in error
             ? error.data as string
             : 'An error occurred';
-        return (
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: '80vh',
-                p: 3,
-                textAlign: 'center'
-            }}>
-                <Typography color={"secondary"}
-                            variant={"h1"}>
-                    Error: {errorMessage}
-                </Typography>
-            </Box>
-        );
+        return <ErrorPage errorMessage={errorMessage}/>
     }
     return (
         <Box sx={{
@@ -83,29 +57,6 @@ const Product = () => {
                             value={sortBy}
                             onChange={handleChange}
                             label="filter"
-                            color={"secondary"}
-                            sx={{
-                                textAlign: "center",
-                                borderRadius: 2,
-                                '& .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: 'black', // Черная рамка по умолчанию
-                                },
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: 'purple.200', // Светло-фиолетовый при наведении
-                                },
-                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: 'purple.500', // Фиолетовый при фокусе
-                                },
-                                '&.Mui-focused': {
-                                    backgroundColor: 'rgba(156, 39, 176, 0.08)', // Легкий фиолетовый фон при фокусе
-                                },
-                                '& .MuiSelect-select': {
-                                    color: 'black', // Черный текст
-                                },
-                                '& .MuiSvgIcon-root': {
-                                    color: 'black', // Черная иконка стрелки
-                                },
-                            }}
                         >
                             <MenuItem value="newest">
                                 <em>Newest</em>
@@ -128,7 +79,10 @@ const Product = () => {
             {data && data.length > 0 ? (
                 <ProductList products={data}/>
             ) : (
-                <p>No products found</p>
+                <Typography color={"secondary"}
+                            variant={"h3"}>
+                    No Products Found
+                </Typography>
             )}
         </Box>
     );

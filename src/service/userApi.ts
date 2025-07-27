@@ -10,7 +10,7 @@ interface UserProfileDto {
     street: string;
 }
 
-interface ProductForFarmDto {
+export interface ProductForFarmDto {
     productId: number;
     productName: string;
     pricePerUnit: number;
@@ -26,22 +26,22 @@ export interface FarmDto {
     farmName: string;
     city: string;
     street: string;
-    productForFarmDto: ProductForFarmDto[];
+    products: ProductForFarmDto[];
 }
 
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-       baseUrl: "http://localhost:8080/users",
-        prepareHeaders: (headers, { getState }) => {
+        baseUrl: "http://localhost:8080/users",
+        prepareHeaders: (headers, {getState}) => {
             headers.set("Content-Type", "application/json");
-            const { accessToken } = (getState() as RootState).auth;
+            const {accessToken} = (getState() as RootState).auth;
             if (accessToken) {
                 headers.set("Authorization", `Bearer ${accessToken}`);
             }
 
             return headers;
-        }
+        },
     }),
     refetchOnFocus: true,
     tagTypes: ['User'],
@@ -58,8 +58,13 @@ export const userApi = createApi({
                 method: 'GET',
             }),
             providesTags: ['User']
+        }),
+        getFarmById: builder.query<FarmDto, string>({
+            query: (farmId) => `/farm/${farmId}`,  // Просто принимаем строку
+            providesTags: (result, error, farmId) =>
+                [{ type: 'User', id: farmId }]
         })
     })
 })
 
-export const { useGetFarmsQuery, useGetCurrentUserQuery } = userApi;
+export const {useGetFarmsQuery, useGetCurrentUserQuery, useGetFarmByIdQuery} = userApi;

@@ -1,45 +1,57 @@
 import {useGetFarmsQuery} from "../../service/userApi.ts";
+import {Box, Fade, Typography} from "@mui/material";
+import FarmList from "../farm-list/FarmList.tsx";
+import IsLoading from "../is-loading-page/IsLoading.tsx";
+import ErrorPage from "../error-page/ErrorPage.tsx";
 
 const Farms = () => {
     const {data, error, isLoading} = useGetFarmsQuery();
 
     if (isLoading) {
-        return (
-            <div className="grid place-items-center h-screen">
-                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-        );
+        return <IsLoading/>
     }
 
     if (error) {
         const errorMessage = 'status' in error
             ? error.data as string
             : 'An error occurred';
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="text-2xl font-bold animate-pulse">Error... {errorMessage}</div>
-            </div>
-        );
+        return <ErrorPage errorMessage={errorMessage}/>
     }
+
     return (
-        <div className="container">
-            <h1>Farms</h1>
+        <Box sx={{
+            pt: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            mx: 4,
+            gap: 4,
+        }}>
+            <Fade in={true} timeout={1000}>
+                <Typography variant="h4"
+                            align="center"
+                            sx={{mt: 2}}>
+                    Farms
+                </Typography>
+            </Fade>
             {data && data.length > 0 ? (
-                <ul>
-                    {data.map((farm) => (
-                        <li key={farm.login}>
-                            {farm.email} - ${farm.email}
-                            {farm.phone} - ${farm.phone}
-                            {farm.farmName} - ${farm.farmName}
-                            {farm.city} - ${farm.city}
-                            {farm.street} - ${farm.street}
-                        </li>
-                    ))}
-                </ul>
+                <FarmList farms={data}/>
             ) : (
-                <p>No Farms Found</p>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minHeight: '80vh',
+                    p: 3,
+                    textAlign: 'center'
+                }}>
+                    <Typography color={"secondary"}
+                                variant={"h3"}>
+                        No Farms Found
+                    </Typography>
+                </Box>
             )}
-        </div>
+        </Box>
     )
 }
 

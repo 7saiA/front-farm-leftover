@@ -220,7 +220,13 @@ const Header = () => {
             <AppBar
                 position="static"
                 sx={{
-                    height: "8vh",
+                    height: {
+                        xs: "12vh",
+                        sm: "12vh",
+                        md: "12vh",
+                        lg: "12vh",
+                        xl: "12vh",
+                    },
                     backgroundColor: "whitesmoke",
                     display: "flex",
                     justifyContent: "center",

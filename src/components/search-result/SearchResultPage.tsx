@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import {useSearchQuery} from "../../service/productsApi.ts";
 
-const SearchResultsPage = () => {
+const SearchResultPage = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const searchQuery = queryParams.get('q') || '';
@@ -48,4 +48,4 @@ const SearchResultsPage = () => {
     );
 };
 
-export default SearchResultsPage;
+export default SearchResultPage;

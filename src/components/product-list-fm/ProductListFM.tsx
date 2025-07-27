@@ -1,17 +1,12 @@
-import type {ProductDto} from "../../service/productsApi.ts";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import type {ProductForFarmDto} from "../../service/userApi.ts";
 
 interface Props {
-    products: ProductDto[];
+    farmProducts: ProductForFarmDto[];
+    isMyFarmProfile?: boolean;
 }
 
-const ProductList = ({products}: Props) => {
-    const navigate = useNavigate();
-
-    const handleFarmClick = (farmId: string) => {
-        navigate(`/farms/${farmId}`);
-    };
+const ProductListFM = ({farmProducts, isMyFarmProfile}: Props) => {
 
     return (
         <Box sx={{
@@ -27,8 +22,8 @@ const ProductList = ({products}: Props) => {
             mx: 4,
             gap: 4,
         }}>
-            {products && products.length > 0 ? (
-                products.map((product) => (
+            {farmProducts && farmProducts.length > 0 ? (
+                farmProducts.map((product) => (
                     <Fade in={true} timeout={1000}>
                         <Paper elevation={8}
                                sx={{borderRadius: 2}}>
@@ -60,22 +55,23 @@ const ProductList = ({products}: Props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions sx={{justifyContent: "center"}}>
-                                    <Box sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 1
-                                    }}>
-                                        <Button size={"small"}
-                                                variant={"contained"}
-                                                color={"secondary"}
-                                                onClick={() => handleFarmClick(product.userForProductDto.login)}>
-                                            {product.userForProductDto.farmName}
-                                        </Button>
+                                    {!isMyFarmProfile ? (
                                         <Button size={"small"}
                                                 variant={"contained"}>
-                                            Add to Cart
+                                            Add to cart
                                         </Button>
-                                    </Box>
+                                    ) : (
+                                        <Box>
+                                            <Button size={"small"}
+                                                    variant={"contained"}>
+                                                Edit
+                                            </Button>
+                                            <Button size={"small"}
+                                                    variant={"contained"}>
+                                                Delete
+                                            </Button>
+                                        </Box>
+                                    )}
                                 </CardActions>
                             </Card>
                         </Paper>
@@ -90,4 +86,4 @@ const ProductList = ({products}: Props) => {
     )
 }
 
-export default ProductList;
+export default ProductListFM;

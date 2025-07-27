@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import {useLogoutMutation, useRefreshTokenMutation, useSignInMutation} from '../../service/authApi';
 import { useNavigate } from 'react-router-dom';
+import IsLoading from "../is-loading-page/IsLoading.tsx";
+import ErrorPage from "../error-page/ErrorPage.tsx";
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -34,25 +36,14 @@ const SignIn = () => {
     };
 
     if (isLoading) {
-        return (
-            <div className="grid place-items-center h-screen">
-                <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-        );
+        return <IsLoading/>
     }
 
     if (error) {
         const errorMessage = 'status' in error
-            ? (error.data as { message?: string })?.message || 'Login failed'
-            : 'Login failed';
-
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="text-2xl font-bold text-red-500 animate-pulse">
-                    Error: {errorMessage}
-                </div>
-            </div>
-        );
+            ? error.data as string
+            : 'An error occurred';
+        return <ErrorPage errorMessage={errorMessage}/>
     }
 
     return (
