@@ -116,7 +116,7 @@ const Header = () => {
                 <>
                     <Typography
                         component={RouterLink}
-                        to="/register"
+                        to="/profile"
                         sx={{ display: "block", mb: 2, color: "black", fontWeight: "bold", borderBottom: "1px solid black", pb: 0.5  }}
                         onClick={toggleMobileDrawer}
                     >
@@ -130,7 +130,7 @@ const Header = () => {
                         onClick={toggleMobileDrawer}
                     >
                         <InventoryIcon sx={{ mr: 1 }} />
-                        Profile
+                        My Orders
                     </Typography>
                     <Typography
                         sx={{ display: "block", mb: 2, color: "red", cursor: "pointer", fontWeight: "bold", borderBottom: "1px solid black", pb: 0.5  }}
@@ -168,6 +168,8 @@ const Header = () => {
     const menuItems = isAuthenticated
         ? [
             <MenuItem
+                component={RouterLink}
+                to="/profile"
                 key="profile"
                 sx={{ color: "black", "&:hover": { color: "rebeccapurple" } }}
                 onClick={handleMenuClose}
@@ -176,6 +178,8 @@ const Header = () => {
                 Profile
             </MenuItem>,
             <MenuItem
+                component={RouterLink}
+                to="/orders"
                 key="orders"
                 sx={{ color: "black", "&:hover": { color: "rebeccapurple" } }}
                 onClick={handleMenuClose}
