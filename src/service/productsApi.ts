@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type {FarmDto} from "./userApi.ts";
+import type {RootState} from "../app/store.ts";
+import type {UserDto} from "./authApi.ts";
 
 export interface UserForProductDto{
     login: string;
@@ -20,10 +21,26 @@ export interface ProductDto {
     userForProductDto: UserForProductDto;
 }
 
+interface NewProductDto {
+    productName: string;
+    pricePerUnit: number;
+    unit: string;
+    availableQuantity: number;
+}
+
 export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8080/products"
+        baseUrl: "http://localhost:8080/products",
+        prepareHeaders: (headers, { getState }) => {
+            headers.set("Content-Type", "application/json");
+            const token = (getState() as RootState).auth.accessToken;
+            if (token) {
+                headers.set("Authorization", `Bearer ${token}`);
+            }
+
+            return headers;
+        }
     }),
     refetchOnFocus: true,
     tagTypes: ['Product'],
@@ -35,17 +52,17 @@ export const productsApi = createApi({
                 providesTags: ['Product'],
             })
         }),
-        addProduct: builder.mutation<void, { farmId: string; product: ProductDto }>({
-            query: ({ farmId, product }) => ({
-                url: `/${farmId}`,
+        addProduct: builder.mutation<ProductDto, NewProductDto>({
+            query: (newProductDto ) => ({
+                url: "/add-product",
                 method: "POST",
-                body: product,
-                invalidatesTags: ['Product']
-            })
+                body: newProductDto,
+            }),
+            invalidatesTags: ['Product']
         }),
         search: builder.query<{
             products: ProductDto[];
-            farms: FarmDto[];
+            farms: UserDto[];
         },string>({
             query: (query) => ({
                 url: "/search",

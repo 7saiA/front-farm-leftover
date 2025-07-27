@@ -1,15 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
-interface UserDto {
-    login: string;
-    email: string;
-    password: string;
-    phone: string;
-    role: string;
-    farmName: string;
-    city: string;
-    street: string;
-}
+import type {UserDto} from "../service/authApi.ts";
 
 interface AuthState {
     accessToken: string | null;

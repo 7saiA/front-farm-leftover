@@ -1,9 +1,9 @@
 import {Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
-import type {FarmDto} from "../../service/userApi.ts";
 import {useNavigate} from "react-router-dom";
+import type {UserDto} from "../../service/authApi.ts";
 
 interface Props {
-    farm: FarmDto;
+    farm: UserDto;
     isFarmPage?: boolean;
 }
 

@@ -11,6 +11,16 @@ export interface UserDto {
     farmName: string;
     city: string;
     street: string;
+    products: ProductForFarmDto[];
+}
+
+export interface ProductForFarmDto {
+    productId: number;
+    productName: string;
+    pricePerUnit: number;
+    unit: string;
+    availableQuantity: number;
+    createdAt: string;
 }
 
 export interface AuthResponse {
@@ -42,9 +52,9 @@ export const authApi = createApi({
         credentials: "include",
         prepareHeaders: (headers, { getState }) => {
             headers.set("Content-Type", "application/json");
-            const { accessToken } = (getState() as RootState).auth;
-            if (accessToken) {
-                headers.set("Authorization", `Bearer ${accessToken}`);
+            const token = (getState() as RootState).auth.accessToken;
+            if (token) {
+                headers.set("Authorization", `Bearer ${token}`);
             }
 
             return headers;

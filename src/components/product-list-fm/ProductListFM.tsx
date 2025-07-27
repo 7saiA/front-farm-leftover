@@ -1,5 +1,5 @@
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
-import type {ProductForFarmDto} from "../../service/userApi.ts";
+import type {ProductForFarmDto} from "../../service/authApi.ts";
 
 interface Props {
     farmProducts: ProductForFarmDto[];

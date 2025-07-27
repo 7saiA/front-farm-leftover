@@ -1,33 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import type {RootState} from "../app/store.ts";
-
-interface UserProfileDto {
-    login: string;
-    email: string;
-    phone: string;
-    farmName: string;
-    city: string;
-    street: string;
-}
-
-export interface ProductForFarmDto {
-    productId: number;
-    productName: string;
-    pricePerUnit: number;
-    unit: string;
-    availableQuantity: number;
-    createdAt: string;
-}
-
-export interface FarmDto {
-    login: string;
-    email: string;
-    phone: string;
-    farmName: string;
-    city: string;
-    street: string;
-    products: ProductForFarmDto[];
-}
+import type {UserDto} from "./authApi.ts";
 
 export const userApi = createApi({
     reducerPath: 'userApi',
@@ -35,9 +8,9 @@ export const userApi = createApi({
         baseUrl: "http://localhost:8080/users",
         prepareHeaders: (headers, {getState}) => {
             headers.set("Content-Type", "application/json");
-            const {accessToken} = (getState() as RootState).auth;
-            if (accessToken) {
-                headers.set("Authorization", `Bearer ${accessToken}`);
+            const token = (getState() as RootState).auth.accessToken;
+            if (token) {
+                headers.set("Authorization", `Bearer ${token}`);
             }
 
             return headers;
@@ -46,20 +19,22 @@ export const userApi = createApi({
     refetchOnFocus: true,
     tagTypes: ['User'],
     endpoints: (builder) => ({
-        getFarms: builder.query<FarmDto[], void>({
+        getFarms: builder.query<UserDto[], void>({
             query: () => ({
                 url: '/farms',
                 providesTags: ['User']
             })
         }),
-        getCurrentUser: builder.query<UserProfileDto, void>({
+        getCurrentUser: builder.query<UserDto, void>({
             query: () => ({
                 url: '/profile',
                 method: 'GET',
             }),
-            providesTags: ['User']
+            providesTags: (result) =>
+                result ? [{ type: 'User', id: 'CURRENT' }] : [],
+            extraOptions: { maxRetries: 1 },
         }),
-        getFarmById: builder.query<FarmDto, string>({
+        getFarmById: builder.query<UserDto, string>({
             query: (farmId) => `/farm/${farmId}`,  // Просто принимаем строку
             providesTags: (result, error, farmId) =>
                 [{ type: 'User', id: farmId }]
