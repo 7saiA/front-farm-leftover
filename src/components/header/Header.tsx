@@ -50,6 +50,7 @@ const Header = () => {
             await logout().unwrap();
             handleMenuClose();
             setMobileDrawerOpen(false);
+            navigate('/');
         } catch (error) {
             console.error("Logout failed:", error);
         }

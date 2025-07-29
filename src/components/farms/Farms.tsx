@@ -5,6 +5,7 @@ import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
 
 const Farms = () => {
+
     const {data, error, isLoading} = useGetFarmsQuery();
 
     if (isLoading) {

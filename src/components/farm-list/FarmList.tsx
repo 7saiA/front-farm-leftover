@@ -1,9 +1,9 @@
 import {Box} from "@mui/material";
 import FarmCard from "../farm-card/FarmCard.tsx";
-import type {UserDto} from "../../service/authApi.ts";
+import type {AllFarmDto} from "../../service/userApi.ts";
 
 interface Props {
-    farms: UserDto[];
+    farms: AllFarmDto[];
 }
 
 const FarmList = ({farms}: Props) => {

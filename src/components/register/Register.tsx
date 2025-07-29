@@ -6,6 +6,7 @@ const Register = () => {
     const [isFarmForm, setIsFarmForm] = useState(false);
     const [formData, setFormData] = useState({
         login: '',
+        userName: '',
         password: '',
         email: '',
         phone: '',
@@ -35,6 +36,7 @@ const Register = () => {
             street: formData.street
         } : {
             login: formData.login,
+            userName: formData.userName,
             password: formData.password,
             email: formData.email,
             phone: formData.phone,
@@ -42,7 +44,7 @@ const Register = () => {
 
         try {
             await registerUser(userData).unwrap();
-            navigate('/sign-in');
+            navigate('/');
         } catch (err) {
             console.error('Registration failed:', err);
         }
@@ -102,11 +104,24 @@ const Register = () => {
                                 type="text"
                                 required
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                                placeholder="Username"
+                                placeholder="Login"
                                 value={formData.login}
                                 onChange={handleChange}
                             />
                         </div>
+                        {!isFarmForm && (
+                            <div>
+                                <input
+                                    name="userName"
+                                    type="text"
+                                    required
+                                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+                                    placeholder="Nickname"
+                                    value={formData.userName}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        )}
                         <div>
                             <input
                                 name="password"

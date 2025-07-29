@@ -1,5 +1,5 @@
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
-import type {ProductForFarmDto} from "../../service/authApi.ts";
+import type {ProductForFarmDto} from "../../service/userApi.ts";
 
 interface Props {
     farmProducts: ProductForFarmDto[];
@@ -49,9 +49,6 @@ const ProductListFM = ({farmProducts, isMyFarmProfile}: Props) => {
                                     </Typography>
                                     <Typography variant={"body1"}>
                                         Available: {product.availableQuantity}
-                                    </Typography>
-                                    <Typography variant={"caption"}>
-                                        Added: {new Date(product.createdAt).toLocaleDateString()}
                                     </Typography>
                                 </CardContent>
                                 <CardActions sx={{justifyContent: "center"}}>

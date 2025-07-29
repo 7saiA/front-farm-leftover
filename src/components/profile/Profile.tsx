@@ -11,7 +11,7 @@ const Profile = () => {
     // const handleSubmit = async () => {
     //     try {
     //         const newProduct = {
-    //             productName: 'Яблоки',
+    //             productName: 'Apple',
     //             pricePerUnit: 100,
     //             unit: 'кг',
     //             availableQuantity: 50
@@ -43,7 +43,7 @@ const Profile = () => {
             gap: 4,
         }}>
             {data ? (
-                <Fade in={true} timeout={1000} key={data.login}>
+                <Fade in={true} timeout={1000} key={data.email}>
                     <Paper elevation={8}
                            sx={{borderRadius: 2}}>
                         <Card variant="elevation"
@@ -61,7 +61,7 @@ const Profile = () => {
                                 <Typography gutterBottom
                                             variant="h5"
                                             component="div">
-                                    {data.farmName}
+                                    {!data.farmName ? data.userName : data.farmName}
                                 </Typography>
                                 <Typography variant={"body1"}>
                                     Phone: {data.phone}

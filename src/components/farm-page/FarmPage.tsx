@@ -6,17 +6,17 @@ import {
 import {useParams} from "react-router-dom";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
-import {useGetFarmByIdQuery} from "../../service/userApi.ts";
+import {useGetFarmByNameQuery} from "../../service/userApi.ts";
 import FarmCard from "../farm-card/FarmCard.tsx";
 import ProductListFM from "../product-list-fm/ProductListFM.tsx";
 
 const FarmPage = () => {
-    const {farmId} = useParams<{ farmId: string }>();
-    const {data: farm, isLoading, error} = useGetFarmByIdQuery(farmId || '', {
-        skip: !farmId
+    const {farmName} = useParams<{ farmName: string }>();
+    const {data: farm, isLoading, error} = useGetFarmByNameQuery(farmName || '', {
+        skip: !farmName
     });
 
-    if (!farmId) {
+    if (!farmName) {
         return (
             <Box sx={{
                 display: 'flex',
@@ -28,7 +28,7 @@ const FarmPage = () => {
                 textAlign: 'center'
             }}>
                 <Typography color="error" variant="h4">
-                    Farm ID is missing
+                    Farm name is missing
                 </Typography>
             </Box>
         );

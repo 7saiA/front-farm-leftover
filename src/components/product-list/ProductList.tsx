@@ -9,8 +9,8 @@ interface Props {
 const ProductList = ({products}: Props) => {
     const navigate = useNavigate();
 
-    const handleFarmClick = (farmId: string) => {
-        navigate(`/farms/${farmId}`);
+    const handleFarmClick = (farmName: string) => {
+        navigate(`/farm/${farmName}`);
     };
 
     return (
@@ -55,9 +55,6 @@ const ProductList = ({products}: Props) => {
                                     <Typography variant={"body1"}>
                                         Available: {product.availableQuantity}
                                     </Typography>
-                                    <Typography variant={"caption"}>
-                                        Added: {new Date(product.createdAt).toLocaleDateString()}
-                                    </Typography>
                                 </CardContent>
                                 <CardActions sx={{justifyContent: "center"}}>
                                     <Box sx={{
@@ -68,8 +65,8 @@ const ProductList = ({products}: Props) => {
                                         <Button size={"small"}
                                                 variant={"contained"}
                                                 color={"secondary"}
-                                                onClick={() => handleFarmClick(product.userForProductDto.login)}>
-                                            {product.userForProductDto.farmName}
+                                                onClick={() => handleFarmClick(product.farmName)}>
+                                            {product.farmName}
                                         </Button>
                                         <Button size={"small"}
                                                 variant={"contained"}>

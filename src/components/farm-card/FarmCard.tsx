@@ -1,21 +1,21 @@
 import {Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import type {UserDto} from "../../service/authApi.ts";
+import type {AllFarmDto} from "../../service/userApi.ts";
 
 interface Props {
-    farm: UserDto;
+    farm: AllFarmDto;
     isFarmPage?: boolean;
 }
 
 const FarmCard = ({farm, isFarmPage}: Props) => {
     const navigate = useNavigate();
 
-    const handleFarmClick = (farmId: string) => {
-        navigate(`/farms/${farmId}`);
+    const handleFarmClick = (farmName: string) => {
+        navigate(`/farm/${farmName}`);
     };
 
     return (
-        <Fade in={true} timeout={1000} key={farm.login}>
+        <Fade in={true} timeout={1000} key={farm.farmName}>
             <Paper elevation={8}
                    sx={{borderRadius: 2}}>
                 <Card variant="elevation"
@@ -50,7 +50,7 @@ const FarmCard = ({farm, isFarmPage}: Props) => {
                             <Button size={"small"}
                                     variant={"contained"}
                                     color={"secondary"}
-                                    onClick={() => handleFarmClick(farm.login)}>
+                                    onClick={() => handleFarmClick(farm.farmName)}>
                                 Check Account
                             </Button>
                         )}

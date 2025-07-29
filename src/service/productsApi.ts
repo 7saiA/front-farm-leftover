@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {RootState} from "../app/store.ts";
-import type {UserDto} from "./authApi.ts";
+import type {FarmDto} from "./userApi.ts";
 
 export interface UserForProductDto{
     login: string;
@@ -17,8 +17,15 @@ export interface ProductDto {
     pricePerUnit: number;
     unit: string;
     availableQuantity: number;
-    createdAt: string;
-    userForProductDto: UserForProductDto;
+    farmName: string;
+}
+
+export interface FarmProductDto {
+    productId: number;
+    productName: string;
+    pricePerUnit: number;
+    unit: string;
+    availableQuantity: number;
 }
 
 interface NewProductDto {
@@ -52,7 +59,7 @@ export const productsApi = createApi({
                 providesTags: ['Product'],
             })
         }),
-        addProduct: builder.mutation<ProductDto, NewProductDto>({
+        addProduct: builder.mutation<FarmProductDto, NewProductDto>({
             query: (newProductDto ) => ({
                 url: "/add-product",
                 method: "POST",
@@ -62,7 +69,7 @@ export const productsApi = createApi({
         }),
         search: builder.query<{
             products: ProductDto[];
-            farms: UserDto[];
+            farms: FarmDto[];
         },string>({
             query: (query) => ({
                 url: "/search",

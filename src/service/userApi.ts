@@ -1,6 +1,35 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import type {RootState} from "../app/store.ts";
-import type {UserDto} from "./authApi.ts";
+
+export interface UserDto {
+    userName: string;
+    email: string;
+    phone: string;
+    farmName: string;
+    city: string;
+    street: string;
+    products: ProductForFarmDto[];
+}
+
+export interface FarmDto extends AllFarmDto{
+    products: ProductForFarmDto[];
+}
+
+export interface AllFarmDto{
+    farmName: string;
+    email: string;
+    phone: string;
+    city: string;
+    street: string;
+}
+
+export interface ProductForFarmDto {
+    productId: string;
+    productName: string;
+    pricePerUnit: number;
+    unit: string;
+    availableQuantity: number;
+}
 
 export const userApi = createApi({
     reducerPath: 'userApi',
@@ -19,7 +48,7 @@ export const userApi = createApi({
     refetchOnFocus: true,
     tagTypes: ['User'],
     endpoints: (builder) => ({
-        getFarms: builder.query<UserDto[], void>({
+        getFarms: builder.query<AllFarmDto[], void>({
             query: () => ({
                 url: '/farms',
                 providesTags: ['User']
@@ -30,16 +59,11 @@ export const userApi = createApi({
                 url: '/profile',
                 method: 'GET',
             }),
-            providesTags: (result) =>
-                result ? [{ type: 'User', id: 'CURRENT' }] : [],
-            extraOptions: { maxRetries: 1 },
         }),
-        getFarmById: builder.query<UserDto, string>({
-            query: (farmId) => `/farm/${farmId}`,  // Просто принимаем строку
-            providesTags: (result, error, farmId) =>
-                [{ type: 'User', id: farmId }]
+        getFarmByName: builder.query<FarmDto, string>({
+            query: (farmName) => `/farm/${farmName}`
         })
     })
 })
 
-export const {useGetFarmsQuery, useGetCurrentUserQuery, useGetFarmByIdQuery} = userApi;
+export const {useGetFarmsQuery, useGetCurrentUserQuery, useGetFarmByNameQuery} = userApi;

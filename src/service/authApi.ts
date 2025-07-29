@@ -2,35 +2,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {clearCredentials, setCredentials} from "../features/authSlice.ts";
 import type {RootState} from "../app/store.ts";
 
-export interface UserDto {
-    login: string;
-    email: string;
-    password: string;
-    phone: string;
-    role: string;
-    farmName: string;
-    city: string;
-    street: string;
-    products: ProductForFarmDto[];
-}
-
-export interface ProductForFarmDto {
-    productId: number;
-    productName: string;
-    pricePerUnit: number;
-    unit: string;
-    availableQuantity: number;
-    createdAt: string;
-}
-
-export interface AuthResponse {
-    accessToken: string;
-    refreshToken: string | null;
-    userDto: UserDto;
-}
-
 export interface UserRegisterDto {
     login: string;
+    userName?: string;
     email: string;
     password: string;
     phone: string;
@@ -61,14 +35,25 @@ export const authApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        register: builder.mutation<UserDto, UserRegisterDto>({
+        register: builder.mutation<{accessToken: string}, UserRegisterDto>({
             query: (userRegisterDto) => ({
                 url: '/register',
                 method: 'POST',
                 body: userRegisterDto,
             }),
+            async onQueryStarted(_, {dispatch, queryFulfilled}) {
+                try {
+                    const response = await queryFulfilled;
+                    const accessToken = response.meta?.response?.headers.get('Authorization')?.replace('Bearer ', '') || '';
+                    dispatch(setCredentials({
+                        accessToken: accessToken,
+                    }));
+                } catch (err) {
+                    console.error("Register failed:", err);
+                }
+            }
         }),
-        signIn: builder.mutation<AuthResponse, LoginPasswordDto>({
+        signIn: builder.mutation<{accessToken: string}, LoginPasswordDto>({
             query: (loginPasswordDto) => ({
                 url: '/sign-in',
                 method: 'POST',
@@ -76,27 +61,27 @@ export const authApi = createApi({
             }),
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {
-                    const { data } = await queryFulfilled;
+                    const response = await queryFulfilled;
+                    const accessToken = response.meta?.response?.headers.get('Authorization')?.replace('Bearer ', '') || '';
                     dispatch(setCredentials({
-                        accessToken: data.accessToken,
-                        user: data.userDto
+                        accessToken: accessToken,
                     }));
                 } catch (err) {
                     console.error("Sign-in failed:", err);
                 }
             }
         }),
-        refreshToken: builder.mutation<AuthResponse, void>({
+        refreshToken: builder.mutation<{accessToken: string}, void>({
             query: () => ({
                 url: '/refresh-token',
                 method: 'POST',
             }),
             async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 try {
-                    const { data } = await queryFulfilled;
+                    const response = await queryFulfilled;
+                    const accessToken = response.meta?.response?.headers.get('Authorization')?.replace('Bearer ', '') || '';
                     dispatch(setCredentials({
-                        accessToken: data.accessToken,
-                        user: data.userDto
+                        accessToken: accessToken,
                     }));
                 } catch (err) {
                     console.error("Refresh token failed:", err);

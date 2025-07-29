@@ -1,15 +1,12 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type {UserDto} from "../service/authApi.ts";
 
 interface AuthState {
     accessToken: string | null;
-    user: UserDto | null;
     isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
     accessToken: null,
-    user: null,
     isAuthenticated: false,
 };
 
@@ -21,16 +18,13 @@ const authSlice = createSlice({
             state,
             action: PayloadAction<{
                 accessToken: string;
-                user: UserDto;  // No refreshToken here
             }>
         ) => {
             state.accessToken = action.payload.accessToken;
-            state.user = action.payload.user;
             state.isAuthenticated = true;
         },
         clearCredentials: (state) => {
             state.accessToken = null;
-            state.user = null;
             state.isAuthenticated = false;
         },
     },
