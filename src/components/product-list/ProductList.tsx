@@ -1,6 +1,9 @@
 import type {ProductDto} from "../../service/productsApi.ts";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {useAddToCartMutation} from "../../service/cartApi.ts";
+import { Snackbar, Alert } from '@mui/material';
+import {useState} from "react";
 
 interface Props {
     products: ProductDto[];
@@ -8,6 +11,35 @@ interface Props {
 
 const ProductList = ({products}: Props) => {
     const navigate = useNavigate();
+
+    const [addToCart] = useAddToCartMutation();
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success' as 'success' | 'error',
+    });
+
+    const handleAddToCart = async (productId: string) => {
+        try {
+            await addToCart({ productId, quantity: 1 }).unwrap();
+            setSnackbar({
+                open: true,
+                message: 'Added to cart!',
+                severity: 'success',
+            });
+        } catch (error) {
+            console.error('Add to cart failed:', error);
+            setSnackbar({
+                open: true,
+                message: 'Failed to add to cart',
+                severity: 'error',
+            });
+        }
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, open: false });
+    };
 
     const handleFarmClick = (farmName: string) => {
         navigate(`/farm/${farmName}`);
@@ -69,7 +101,8 @@ const ProductList = ({products}: Props) => {
                                             {product.farmName}
                                         </Button>
                                         <Button size={"small"}
-                                                variant={"contained"}>
+                                                variant={"contained"}
+                                                onClick={() => handleAddToCart(product.productId)}>
                                             Add to Cart
                                         </Button>
                                     </Box>
@@ -83,6 +116,18 @@ const ProductList = ({products}: Props) => {
                     No Products Found
                 </Typography>
             )}
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={handleCloseSnackbar}
+            >
+                <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={snackbar.severity}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }

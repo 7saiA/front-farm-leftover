@@ -74,7 +74,8 @@ export const productsApi = createApi({
             query: (query) => ({
                 url: "/search",
                 params: {query}
-            })
+            }),
+            
         })
     })
 });
