@@ -1,27 +1,16 @@
 import {useGetCurrentUserQuery} from "../../service/userApi.ts";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
-import {Box, Card, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
-// import {useAddProductMutation} from "../../service/productsApi.ts";
+import {
+    Box,
+    Typography
+} from "@mui/material";
+import ProfileCard from "../profile-card/ProfileCard.tsx";
+import AddProduct from "../profile-add-product/AddProduct.tsx";
+import ProfileProductList from "../profile-product-list/ProfileProductList.tsx";
 
 const Profile = () => {
     const {data, error, isLoading} = useGetCurrentUserQuery();
-    // const [addProduct] = useAddProductMutation();
-    //
-    // const handleSubmit = async () => {
-    //     try {
-    //         const newProduct = {
-    //             productName: 'Apple',
-    //             pricePerUnit: 100,
-    //             unit: 'кг',
-    //             availableQuantity: 50
-    //         };
-    //         const createdProduct = await addProduct(newProduct).unwrap();
-    //         console.log('Продукт создан:', createdProduct);
-    //     } catch (error) {
-    //         console.error('Ошибка создания продукта:', error);
-    //     }
-    // };
 
     if (isLoading) {
         return <IsLoading/>
@@ -43,41 +32,7 @@ const Profile = () => {
             gap: 4,
         }}>
             {data ? (
-                <Fade in={true} timeout={1000} key={data.email}>
-                    <Paper elevation={8}
-                           sx={{borderRadius: 2}}>
-                        <Card variant="elevation"
-                              sx={{
-                                  height: '100%',
-                                  border: 1,
-                                  borderColor: "green",
-                                  borderRadius: 2
-                              }}>
-                            <CardMedia
-                                sx={{height: 160}}
-                                image={"/images/farm.jpg"}
-                                title={"farm"}/>
-                            <CardContent>
-                                <Typography gutterBottom
-                                            variant="h5"
-                                            component="div">
-                                    {!data.farmName ? data.userName : data.farmName}
-                                </Typography>
-                                <Typography variant={"body1"}>
-                                    Phone: {data.phone}
-                                </Typography>
-                                <Typography variant={"body1"}>
-                                    Email: {data.email}
-                                </Typography>
-                                {data.farmName && (
-                                    <Typography variant={"caption"}>
-                                        Location: {data.city}, {data.street}
-                                    </Typography>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </Paper>
-                </Fade>
+                <ProfileCard user={data}/>
             ) : (
                 <Box sx={{
                     display: 'flex',
@@ -94,6 +49,8 @@ const Profile = () => {
                     </Typography>
                 </Box>
             )}
+            {data && data.farmName && (<AddProduct/>)}
+            {data && data.farmName && (<ProfileProductList/>)}
         </Box>
     )
 }

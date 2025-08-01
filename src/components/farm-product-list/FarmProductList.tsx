@@ -1,13 +1,11 @@
-import {Box, Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
 import type {ProductForFarmDto} from "../../service/userApi.ts";
+import {Box, Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
 
 interface Props {
     farmProducts: ProductForFarmDto[];
-    isMyFarmProfile?: boolean;
 }
 
-const ProductListFM = ({farmProducts, isMyFarmProfile}: Props) => {
-
+const FarmProductList = ({farmProducts}: Props) => {
     return (
         <Box sx={{
             pt: 4,
@@ -52,23 +50,10 @@ const ProductListFM = ({farmProducts, isMyFarmProfile}: Props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions sx={{justifyContent: "center"}}>
-                                    {!isMyFarmProfile ? (
-                                        <Button size={"small"}
-                                                variant={"contained"}>
-                                            Add to cart
-                                        </Button>
-                                    ) : (
-                                        <Box>
-                                            <Button size={"small"}
-                                                    variant={"contained"}>
-                                                Edit
-                                            </Button>
-                                            <Button size={"small"}
-                                                    variant={"contained"}>
-                                                Delete
-                                            </Button>
-                                        </Box>
-                                    )}
+                                    <Button size={"small"}
+                                            variant={"contained"}>
+                                        Add to cart
+                                    </Button>
                                 </CardActions>
                             </Card>
                         </Paper>
@@ -83,4 +68,4 @@ const ProductListFM = ({farmProducts, isMyFarmProfile}: Props) => {
     )
 }
 
-export default ProductListFM;
+export default FarmProductList;

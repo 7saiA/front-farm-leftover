@@ -4,7 +4,7 @@ import {Box, Button, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 const Home = () => {
-    const user = useSelector((state: RootState) => state.auth.user);
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const navigate = useNavigate();
 
     const handleProfileClick = () => {
@@ -28,10 +28,10 @@ const Home = () => {
                     textAlign: 'center',
                 }}>
                 <Box sx={{}}>
-                    {user ? (
+                    {isAuthenticated ? (
                         <Box>
                             <Typography variant={"h4"}>
-                                Hello {user.login}
+                                Welcome Back
                             </Typography>
                             <Button variant={"contained"}
                                     color={"secondary"}

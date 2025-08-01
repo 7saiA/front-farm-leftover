@@ -8,7 +8,7 @@ import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
 import {useGetFarmByNameQuery} from "../../service/userApi.ts";
 import FarmCard from "../farm-card/FarmCard.tsx";
-import ProductListFM from "../product-list-fm/ProductListFM.tsx";
+import FarmProductList from "../farm-product-list/FarmProductList.tsx";
 
 const FarmPage = () => {
     const {farmName} = useParams<{ farmName: string }>();
@@ -83,7 +83,7 @@ const FarmPage = () => {
                 <FarmCard farm={farm} isFarmPage={true}/>
             </Box>
             {farm.products && farm.products.length > 0 ? (
-                <ProductListFM farmProducts={farm.products}/>
+                <FarmProductList farmProducts={farm.products}/>
             ) : (
                 <Typography color={"secondary"}
                             variant={"h3"}>

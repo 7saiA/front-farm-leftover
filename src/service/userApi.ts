@@ -51,19 +51,25 @@ export const userApi = createApi({
         getFarms: builder.query<AllFarmDto[], void>({
             query: () => ({
                 url: '/farms',
-                providesTags: ['User']
-            })
+            }),
+            providesTags: ['User']
         }),
         getCurrentUser: builder.query<UserDto, void>({
             query: () => ({
                 url: '/profile',
                 method: 'GET',
             }),
+            providesTags: ['User']
         }),
         getFarmByName: builder.query<FarmDto, string>({
-            query: (farmName) => `/farm/${farmName}`
-        })
+            query: (farmName) => `/farm/${farmName}`,
+            providesTags: ['User']
+        }),
     })
 })
 
-export const {useGetFarmsQuery, useGetCurrentUserQuery, useGetFarmByNameQuery} = userApi;
+export const {
+    useGetFarmsQuery,
+    useGetCurrentUserQuery,
+    useGetFarmByNameQuery
+} = userApi;
