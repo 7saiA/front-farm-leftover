@@ -1,6 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type {RootState} from "../app/store.ts";
+import {createApi} from "@reduxjs/toolkit/query/react";
 import type {FarmDto} from "./userApi.ts";
+import {baseQueryWithRefresh} from "./base-query/baseQuery.ts";
 
 export interface ProductDto {
     productId: string;
@@ -28,31 +28,21 @@ interface NewProductDto {
 
 export const productsApi = createApi({
     reducerPath: 'productsApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8080/products",
-        prepareHeaders: (headers, { getState }) => {
-            headers.set("Content-Type", "application/json");
-            const token = (getState() as RootState).auth.accessToken;
-            if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
-            }
-
-            return headers;
-        }
-    }),
-    refetchOnFocus: true,
+    baseQuery: baseQueryWithRefresh,
+    refetchOnMountOrArgChange: true,
+    // keepUnusedDataFor: 60,
     tagTypes: ['Product'],
     endpoints: (builder) => ({
         getProducts: builder.query<ProductDto[], { sort?: string }>({
             query: ({sort = 'newest'} = {}) => ({
-                url: '/all-products',
+                url: '/products/all-products',
                 params: {sort},
             }),
             providesTags: ['Product'],
         }),
         addProduct: builder.mutation<FarmProductDto, NewProductDto>({
             query: (newProductDto ) => ({
-                url: "/add-product",
+                url: "/products/add-product",
                 method: "POST",
                 body: newProductDto,
             }),
@@ -60,7 +50,7 @@ export const productsApi = createApi({
         }),
         updateProduct: builder.mutation<FarmProductDto, {productId: string, newProductDto: NewProductDto}>({
             query: ({productId, newProductDto}) => ({
-                url: `/${productId}`,
+                url: `/products/${productId}`,
                 method: "PUT",
                 body: newProductDto,
             }),
@@ -68,14 +58,14 @@ export const productsApi = createApi({
         }),
         deleteProduct: builder.mutation<void, string>({
             query: (productId) => ({
-                url: `/${productId}`,
+                url: `/products/${productId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Product'],
         }),
         getProductsForCurrentFarm: builder.query<FarmProductDto[], void>({
             query: () => ({
-                url: "/my-products",
+                url: "/products/my-products",
                 method: "GET",
             }),
             providesTags: ['Product'],

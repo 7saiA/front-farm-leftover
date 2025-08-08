@@ -8,6 +8,7 @@ import {
 import ProfileCard from "../profile-card/ProfileCard.tsx";
 import AddProduct from "../profile-add-product/AddProduct.tsx";
 import ProfileProductList from "../profile-product-list/ProfileProductList.tsx";
+import {withAuth} from "../../hoc/withAuth.tsx";
 
 const Profile = () => {
     const {data, error, isLoading} = useGetCurrentUserQuery();
@@ -17,10 +18,16 @@ const Profile = () => {
     }
 
     if (error) {
-        const errorMessage = 'status' in error
-            ? error.data as string
+        const errorMessage = (
+            error &&
+            typeof error === 'object' &&
+            'data' in error &&
+            typeof error.data === 'string'
+        )
+            ? error.data
             : 'An error occurred';
-        return <ErrorPage errorMessage={errorMessage}/>
+
+        return <ErrorPage errorMessage={errorMessage} />;
     }
 
     return (
@@ -55,4 +62,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default withAuth(Profile);

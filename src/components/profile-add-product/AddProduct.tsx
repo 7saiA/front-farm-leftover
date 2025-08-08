@@ -8,6 +8,7 @@ import {
     TextField,
     Typography
 } from "@mui/material";
+import {withAuth} from "../../hoc/withAuth.tsx";
 
 const AddProduct = () => {
     const [addProduct] = useAddProductMutation();
@@ -36,6 +37,12 @@ const AddProduct = () => {
                 unit: formData.unit,
                 availableQuantity: formData.availableQuantity,
             };
+            setFormData({
+                productName: '',
+                pricePerUnit: '',
+                unit: '',
+                availableQuantity: 0
+            })
             const createdProduct = await addProduct(newProduct).unwrap();
             console.log('Product is created:', createdProduct);
         } catch (error) {
@@ -178,4 +185,4 @@ const AddProduct = () => {
     )
 }
 
-export default AddProduct;
+export default withAuth(AddProduct);

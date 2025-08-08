@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {useLogoutMutation, useRefreshTokenMutation, useSignInMutation} from '../../service/authApi';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
 
@@ -14,6 +14,7 @@ const SignIn = () => {
     const [refreshToken] = useRefreshTokenMutation();
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -29,7 +30,7 @@ const SignIn = () => {
                 password: formData.password
             }).unwrap();
 
-            navigate('/');
+            navigate(location.state?.from || '/');
         } catch (err) {
             console.error('Login failed:', err);
         }

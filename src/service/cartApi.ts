@@ -1,5 +1,5 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {RootState} from "../app/store.ts";
+import {createApi} from "@reduxjs/toolkit/query/react";
+import {baseQueryWithRefresh} from "./base-query/baseQuery.ts";
 
 export interface AddToCartDto {
     productId: string;
@@ -25,18 +25,7 @@ export interface CartResponseDto {
 
 export const cartApi = createApi({
     reducerPath: 'cartApi',
-    baseQuery: fetchBaseQuery({
-       baseUrl: "http://localhost:8080/cart",
-        prepareHeaders: (headers, { getState }) => {
-           headers.set("Content-Type", "application/json");
-           const token = (getState() as RootState).auth.accessToken;
-           if(token){
-               headers.set("Authorization", `Bearer ${token}`);
-           }
-
-           return headers;
-        }
-    }),
+    baseQuery: baseQueryWithRefresh,
     tagTypes: ['Cart'],
     endpoints: (builder) => ({
         getCart: builder.query<CartResponseDto,void>({
@@ -48,7 +37,7 @@ export const cartApi = createApi({
         }),
         addToCart: builder.mutation<void, AddToCartDto>({
             query: (AddToCartDto)  => ({
-                url: "/add",
+                url: "/cart/add",
                 method: "POST",
                 body: AddToCartDto,
             }),
@@ -57,14 +46,14 @@ export const cartApi = createApi({
         }),
         clearCart: builder.mutation<void,void>({
             query: () => ({
-                url: "/clear",
+                url: "/cart/clear",
                 method: "DELETE",
             }),
             invalidatesTags: ['Cart']
         }),
         deleteCartItem: builder.mutation<void, { cartItemId: number }>({
             query: ({ cartItemId }) => ({
-                url: `/${cartItemId}`,
+                url: `/cart/${cartItemId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ['Cart']

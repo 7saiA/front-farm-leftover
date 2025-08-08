@@ -17,7 +17,7 @@ const ErrorPage = ({errorMessage}: Props) => {
         }}>
             <Typography color={"secondary"}
                         variant={"h3"}>
-                Error...
+                Error... {errorMessage}
             </Typography>
         </Box>
     );

@@ -1,5 +1,5 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {RootState} from "../app/store.ts";
+import {createApi} from "@reduxjs/toolkit/query/react";
+import {baseQueryWithRefresh} from "./base-query/baseQuery.ts";
 
 export interface UserDto {
     userName: string;
@@ -33,36 +33,27 @@ export interface ProductForFarmDto {
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8080/users",
-        prepareHeaders: (headers, {getState}) => {
-            headers.set("Content-Type", "application/json");
-            const token = (getState() as RootState).auth.accessToken;
-            if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
-            }
-
-            return headers;
-        },
-    }),
-    refetchOnFocus: true,
+    baseQuery: baseQueryWithRefresh,
+    refetchOnMountOrArgChange: 30,
+    // keepUnusedDataFor: 10,
     tagTypes: ['User'],
     endpoints: (builder) => ({
         getFarms: builder.query<AllFarmDto[], void>({
             query: () => ({
-                url: '/farms',
+                url: '/users/farms',
             }),
             providesTags: ['User']
         }),
         getCurrentUser: builder.query<UserDto, void>({
             query: () => ({
-                url: '/profile',
+                url: '/users/profile',
                 method: 'GET',
+                // extraPoints: { maxRetries: 2 },
             }),
             providesTags: ['User']
         }),
         getFarmByName: builder.query<FarmDto, string>({
-            query: (farmName) => `/farm/${farmName}`,
+            query: (farmName) => `/users/farm/${farmName}`,
             providesTags: ['User']
         }),
     })

@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import {useSearchQuery} from "../../service/productsApi.ts";
+import ErrorPage from "../error-page/ErrorPage.tsx";
 
 const SearchResultPage = () => {
     const location = useLocation();
@@ -10,6 +11,19 @@ const SearchResultPage = () => {
         skip: !searchQuery
     });
 
+    if (error) {
+        const errorMessage = (
+            error &&
+            typeof error === 'object' &&
+            'data' in error &&
+            typeof error.data === 'string'
+        )
+            ? error.data
+            : 'An error occurred';
+
+        return <ErrorPage errorMessage={errorMessage} />;
+    }
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">
@@ -17,7 +31,6 @@ const SearchResultPage = () => {
             </h1>
 
             {isLoading && <p>Loading results...</p>}
-            {error && <p>Error loading results</p>}
 
             {!searchQuery && (
                 <p>Please enter a search term</p>
@@ -29,7 +42,7 @@ const SearchResultPage = () => {
                         <h2 className="text-xl font-semibold mb-3">Farms</h2>
                         { (
                             data.farms.map(farm => (
-                                <div key={farm.login}>{farm.farmName}</div>
+                                <div key={farm.phone}>{farm.farmName}</div>
                             ))
                         )}
                     </section>

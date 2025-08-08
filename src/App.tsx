@@ -12,17 +12,16 @@ import SearchResultPage from "./components/search-result/SearchResultPage.tsx";
 import Profile from "./components/profile/Profile.tsx";
 import Cart from "./components/cart/Cart.tsx";
 
-
 function App() {
 
     return (
         <BrowserRouter>
             <Header/>
             <Routes>
-                <Route path="/*" element={<Home />} />
-                <Route path={"/products"} element={<Products/>} />
-                <Route path={"/farms"} element={<Farms />} />
-                <Route path={"/sign-in"} element={<SignIn/>} />
+                <Route path="/*" element={<Home/>}/>
+                <Route path={"/products"} element={<Products/>}/>
+                <Route path={"/farms"} element={<Farms/>}/>
+                <Route path={"/sign-in"} element={<SignIn/>}/>
                 <Route path={"/register"} element={<Register/>}/>
                 <Route path={"/farm/:farmName"} element={<FarmPage/>}/>
                 <Route path={"/search"} element={<SearchResultPage/>}/>

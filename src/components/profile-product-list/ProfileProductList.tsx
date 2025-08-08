@@ -20,6 +20,7 @@ import {
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
 import {useState} from "react";
+import {withAuth} from "../../hoc/withAuth.tsx";
 
 const ProfileProductList = () => {
     const [deleteProduct] = useDeleteProductMutation();
@@ -39,10 +40,16 @@ const ProfileProductList = () => {
     }
 
     if (error) {
-        const errorMessage = 'status' in error
-            ? error.data as string
+        const errorMessage = (
+            error &&
+            typeof error === 'object' &&
+            'data' in error &&
+            typeof error.data === 'string'
+        )
+            ? error.data
             : 'An error occurred';
-        return <ErrorPage errorMessage={errorMessage}/>
+
+        return <ErrorPage errorMessage={errorMessage} />;
     }
 
     const handleEditClick = (product: FarmProductDto) => {
@@ -286,4 +293,4 @@ const ProfileProductList = () => {
     )
 }
 
-export default ProfileProductList;
+export default withAuth(ProfileProductList);
