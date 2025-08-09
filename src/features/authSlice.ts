@@ -20,7 +20,6 @@ const authSlice = createSlice({
                 accessToken: string;
             }>
         ) => {
-            if(state.accessToken) {}
             state.accessToken = action.payload.accessToken;
             state.isAuthenticated = true;
         },

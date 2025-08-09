@@ -17,29 +17,38 @@ const baseQuery = fetchBaseQuery({
 })
 
 export const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
-    let result = await baseQuery(args,api,extraOptions);
-    if (result.error?.status === 401) {
-        console.log("Получил 401")
-        const refreshResult = await baseQuery({
-            url: "/auth/refresh-token",
-            method: "POST"
-        }, api, extraOptions);
-        console.log("Ответ от запроса", refreshResult)
-        if (refreshResult.meta) {
-            console.log("Refresh result", refreshResult)
-            console.log("Header", refreshResult.meta?.response?.headers)
-            const newToken = refreshResult.meta?.response?.headers.get('Authorization')?.replace('Bearer ', '') || '';
-            console.log("Новый токен", newToken)
-            api.dispatch(setCredentials({
-                accessToken: newToken
-            }))
-            result = await baseQuery(args,api,extraOptions);
-        } else {
-            console.log("Я попал в else")
-            api.dispatch(clearCredentials());
-            return result
+    const initialResult = await baseQuery(args, api, extraOptions);
+
+    if (initialResult.error?.status === 401) {
+        console.log("[DEBUG] Attempting token refresh...");
+
+        try {
+            // Make refresh request with credentials
+            const refreshResult = await fetch("http://localhost:8080/auth/refresh-token", {
+                method: "POST",
+                credentials: "include", // Crucial for cookies
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            console.log("[DEBUG] Refresh status:", refreshResult.status);
+
+            if (refreshResult.ok) {
+                const newToken = refreshResult.headers.get("Authorization")?.replace("Bearer ", "");
+                if (newToken) {
+                    api.dispatch(setCredentials({ accessToken: newToken }));
+                    return baseQuery(args, api, extraOptions); // Retry original request
+                }
+            }
+        } catch (error) {
+            console.error("[DEBUG] Refresh failed:", error);
         }
+
+        // If we get here, refresh failed
+        api.dispatch(clearCredentials());
     }
-    return result
-}
+
+    return initialResult;
+};
 

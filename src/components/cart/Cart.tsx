@@ -1,4 +1,4 @@
-import { Box, Typography, List, ListItem, Divider, Button, IconButton } from "@mui/material";
+import {Box, Typography, List, Button, IconButton, CardContent, Card} from "@mui/material";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store.ts";
 import {
@@ -12,7 +12,7 @@ import { Snackbar, Alert } from "@mui/material";
 
 const Cart = () => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-    const { data: cart, refetch } = useGetCartQuery();
+    const { data: cart } = useGetCartQuery();
     const [clearCart] = useClearCartMutation();
     const [deleteCartItem] = useDeleteCartItemMutation();
 
@@ -34,7 +34,6 @@ const Cart = () => {
                 message: 'Cart cleared successfully',
                 severity: 'success',
             });
-            refetch();
         } catch (err) {
             console.error('Clearing cart failed:', err);
             setSnackbar({
@@ -53,7 +52,6 @@ const Cart = () => {
                 message: 'Item removed from cart',
                 severity: 'success',
             });
-            refetch();
         } catch (err) {
             console.error('Delete item failed:', err);
             setSnackbar({
@@ -78,32 +76,31 @@ const Cart = () => {
 
             {cart?.items?.length ? (
                 <>
-                    <List>
+
+                    <List sx={{ width: '100%', maxWidth: 600, mx: 'auto' }}>
                         {cart.items.map((item) => (
-                            <Box key={item.productId}>
-                                <ListItem sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Card key={item.productId} variant="outlined" sx={{ mb: 2 }}>
+                                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <Box>
-                                        <Typography variant="h6">{item.productName}</Typography>
-                                        <Typography variant="body2">
+                                        <Typography variant="h6" fontWeight="bold">{item.productName}</Typography>
+                                        <Typography variant="body2" color="text.secondary">
                                             {item.pricePerUnit} per {item.unit}
                                         </Typography>
+                                        <Typography variant="body2">Qty: {item.quantity}</Typography>
+                                        <Typography variant="subtitle2" color="text.primary" sx={{ mt: 0.5 }}>
+                                            Subtotal: {item.subtotal}
+                                        </Typography>
                                     </Box>
-                                    <Box textAlign="right" sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Box sx={{ mr: 2 }}>
-                                            <Typography>Qty: {item.quantity}</Typography>
-                                            <Typography>Subtotal: {item.subtotal}</Typography>
-                                        </Box>
-                                        <IconButton
-                                            color="error"
-                                            onClick={() => handleDeleteItem(item.cartItemId)}
-                                            aria-label="delete"
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Box>
-                                </ListItem>
-                                <Divider />
-                            </Box>
+
+                                    <IconButton
+                                        color="error"
+                                        onClick={() => handleDeleteItem(item.cartItemId)}
+                                        aria-label="delete"
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </CardContent>
+                            </Card>
                         ))}
                     </List>
                     <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

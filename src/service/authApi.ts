@@ -35,7 +35,6 @@ export const authApi = createApi({
             return headers;
         }
     }),
-    //TODO check response of this method
     endpoints: (builder) => ({
         register: builder.mutation<void, UserRegisterDto>({
             query: (userRegisterDto) => ({

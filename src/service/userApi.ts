@@ -35,7 +35,6 @@ export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: baseQueryWithRefresh,
     refetchOnMountOrArgChange: 30,
-    // keepUnusedDataFor: 10,
     tagTypes: ['User'],
     endpoints: (builder) => ({
         getFarms: builder.query<AllFarmDto[], void>({

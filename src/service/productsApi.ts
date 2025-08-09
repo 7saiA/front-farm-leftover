@@ -30,7 +30,7 @@ export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: baseQueryWithRefresh,
     refetchOnMountOrArgChange: true,
-    // keepUnusedDataFor: 60,
+    keepUnusedDataFor: 60,
     tagTypes: ['Product'],
     endpoints: (builder) => ({
         getProducts: builder.query<ProductDto[], { sort?: string }>({
