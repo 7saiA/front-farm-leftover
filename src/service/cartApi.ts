@@ -26,11 +26,12 @@ export interface CartResponseDto {
 export const cartApi = createApi({
     reducerPath: 'cartApi',
     baseQuery: baseQueryWithRefresh,
+    refetchOnMountOrArgChange: true,
     tagTypes: ['Cart'],
     endpoints: (builder) => ({
         getCart: builder.query<CartResponseDto,void>({
             query: () => ({
-                url: "",
+                url: "/cart",
                 method: "GET",
             }),
             providesTags: ['Cart']

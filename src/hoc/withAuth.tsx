@@ -2,7 +2,7 @@ import {type ComponentType, useEffect} from "react";
 import {useSelector} from "react-redux";
 import type {RootState} from "../app/store.ts";
 import {useLocation, useNavigate} from "react-router-dom";
-import IsLoading from "../components/is-loading-page/IsLoading.tsx";
+import Home from "../components/home/Home.tsx";
 
 type RedirectState = {
     from: string;
@@ -11,12 +11,12 @@ type RedirectState = {
 
 export const withAuth = <T extends object>(Component: ComponentType<T>) => {
     return function AuthenticatedComponent(props: T) {
-        const token = useSelector((state: RootState) => state.auth.accessToken);
+        const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
         const navigate = useNavigate();
         const location = useLocation();
 
         useEffect(() => {
-            if (!token && location.pathname !== '/sign-in') {
+            if (!isAuthenticated && location.pathname !== '/sign-in') {
                 navigate('/sign-in', {
                     state: {
                         from: location.pathname,
@@ -27,8 +27,8 @@ export const withAuth = <T extends object>(Component: ComponentType<T>) => {
             }
         }, []);
 
-        if (!token) {
-            return  <IsLoading/>;
+        if (!isAuthenticated) {
+            return <Home/>;
         }
 
         return <Component {...props} />;

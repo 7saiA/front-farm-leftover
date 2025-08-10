@@ -1,8 +1,19 @@
-import { useState } from 'react';
-import {useLogoutMutation, useRefreshTokenMutation, useSignInMutation} from '../../service/authApi';
+import {useState} from 'react';
+import {useSignInMutation} from '../../service/authApi';
 import {useLocation, useNavigate} from 'react-router-dom';
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
+import {
+    Box,
+    Button,
+    Checkbox, CircularProgress,
+    Divider,
+    Fade,
+    FormControlLabel,
+    Paper,
+    TextField,
+    Typography
+} from "@mui/material";
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -10,15 +21,13 @@ const SignIn = () => {
         password: ''
     });
 
-    const [loginUser, { isLoading, error }] = useSignInMutation();
-    const [refreshToken] = useRefreshTokenMutation();
-    const [logout] = useLogoutMutation();
+    const [loginUser, {isLoading, error}] = useSignInMutation();
     const navigate = useNavigate();
     const location = useLocation();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setFormData(prev => ({...prev, [name]: value}));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -48,123 +57,148 @@ const SignIn = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                        Sign in to your account
-                    </h2>
-                </div>
-
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <input type="hidden" name="remember" value="true" />
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                            <input
-                                name="login"
-                                type="text"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                                placeholder="Username"
-                                value={formData.login}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <input
-                                name="password"
-                                type="password"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                                placeholder="Password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                autoComplete="new-password"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <input
-                                id="remember-me"
-                                name="remember-me"
-                                type="checkbox"
-                                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                            />
-                            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                                Remember me
-                            </label>
-                        </div>
-
-                        <div className="text-sm">
-                            <a href="/forgot-password" className="font-medium text-green-600 hover:text-green-500">
-                                Forgot your password?
-                            </a>
-                        </div>
-                    </div>
-
-                    <div>
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+        <Box
+            sx={{
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                p: 3,
+            }}
+        >
+            <Fade in timeout={1000}>
+                <Paper
+                    elevation={6}
+                    sx={{
+                        width: '100%',
+                        maxWidth: { xs: 450, md: 600, lg: 800 },
+                        p: { xs: 3, md: 4, lg: 5 },
+                        borderRadius: 3,
+                        '& .MuiTypography-h4': {
+                            fontSize: { xs: '1.8rem', md: '2.2rem', lg: '2.5rem' }
+                        },
+                        '& .MuiTypography-body1': {
+                            fontSize: { xs: '1rem', md: '1.1rem', lg: '1.2rem' }
+                        },
+                        '& .MuiTextField-root': {
+                            '& .MuiInputBase-root': {
+                                fontSize: { xs: '0.9rem', md: '1rem', lg: '1.1rem' }
+                            }
+                        },
+                        '& .MuiButton-contained': {
+                            fontSize: { xs: '1rem', md: '1.1rem', lg: '1.2rem' },
+                            py: { xs: 1, md: 1.5, lg: 2 }
+                        }
+                    }}
+                >
+                    <Box sx={{textAlign: 'center', mb: 4}}>
+                        <Typography
+                            variant="h4"
+                            component="h1"
+                            sx={{
+                                fontWeight: 700,
+                                letterSpacing: 1
+                            }}
                         >
-                            Sign In
-                        </button>
-                    </div>
-                </form>
+                            Welcome Back
+                        </Typography>
+                        <Typography variant="body1">
+                            Sign in to continue
+                        </Typography>
+                    </Box>
 
-                <div className="text-center">
-                    <button
-                        type="button"
-                        onClick={async () => {
-                            try {
-                                const response = await refreshToken().unwrap();
-                                console.log("New access token:", response.accessToken);
-                                alert("Refresh successful. Check console.");
-                            } catch (err) {
-                                console.error("Refresh token failed", err);
-                                alert("Refresh failed");
-                            }
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2
                         }}
-                        className="mt-4 text-sm font-medium text-blue-600 hover:text-blue-500"
                     >
-                        Test Refresh Token
-                    </button>
-                </div>
+                        <TextField
+                            name="login"
+                            label="Login"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            sx={{borderRadius: 2}}
+                            value={formData.login}
+                            onChange={handleChange}
+                        />
 
-                <div className="text-center">
-                    <button
-                        type="button"
-                        onClick={async () => {
-                            try {
-                                await logout().unwrap();
-                                console.log("Logged out successfully");
-                                alert("Logout successful.");
-                                // optionally redirect after logout
-                                navigate('/sign-in');
-                            } catch (err) {
-                                console.error("Logout failed", err);
-                                alert("Logout failed");
-                            }
-                        }}
-                        className="mt-4 text-sm font-medium text-red-600 hover:text-red-500"
-                    >
-                        Logout
-                    </button>
-                </div>
+                        <TextField
+                            name="password"
+                            label="Password"
+                            type="password"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            sx={{borderRadius: 2}}
+                            value={formData.password}
+                            onChange={handleChange}
+                        />
 
-                <div className="text-center">
-                    <p className="text-sm text-gray-600">
-                        Don't have an account?{' '}
-                        <a href="/register" className="font-medium text-green-600 hover:text-green-500">
-                            Register
-                        </a>
-                    </p>
-                </div>
-            </div>
-        </div>
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            my: 1
+                        }}>
+                            <FormControlLabel
+                                control={<Checkbox color="info"/>}
+                                label="Remember me"
+                            />
+                            <Button
+                                sx={{fontSize: 12}}
+                                color={"error"}
+                            >
+                                Forgot password?
+                            </Button>
+                        </Box>
+
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            size="large"
+                            disabled={isLoading}
+                            color="success"
+                            sx={{
+                                mt: 2,
+                                py: 1.5,
+                                borderRadius: 2,
+                                fontSize: 16,
+                                fontWeight: 800,
+                            }}
+                        >
+                            {isLoading ? <CircularProgress size={24} color="primary"/> : 'Sign In'}
+                        </Button>
+
+                        <Divider sx={{my: 3}}>
+                            <Typography variant="body2">
+                                OR
+                            </Typography>
+                        </Divider>
+
+                        <Typography
+                            variant="body2"
+                            align="center"
+                            sx={{mt: 2}}
+                        >
+                            Don't have an account?{' '}
+                            <Button
+                                color={"success"}
+                                sx={{fontWeight: 600}}
+                                onClick={() => navigate("/register")}
+                            >
+                                Register
+                            </Button>
+                        </Typography>
+                    </Box>
+                </Paper>
+            </Fade>
+        </Box>
     );
 };
 

@@ -23,10 +23,9 @@ export const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs, unknown, Fetc
         console.log("[DEBUG] Attempting token refresh...");
 
         try {
-            // Make refresh request with credentials
             const refreshResult = await fetch("http://localhost:8080/auth/refresh-token", {
                 method: "POST",
-                credentials: "include", // Crucial for cookies
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -34,18 +33,23 @@ export const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs, unknown, Fetc
 
             console.log("[DEBUG] Refresh status:", refreshResult.status);
 
+            if (!refreshResult.ok) {
+                console.error("[DEBUG] Refresh failed with status:", refreshResult.status);
+                api.dispatch(clearCredentials());
+                return initialResult;
+            }
+
             if (refreshResult.ok) {
                 const newToken = refreshResult.headers.get("Authorization")?.replace("Bearer ", "");
                 if (newToken) {
                     api.dispatch(setCredentials({ accessToken: newToken }));
-                    return baseQuery(args, api, extraOptions); // Retry original request
+                    return baseQuery(args, api, extraOptions);
                 }
             }
         } catch (error) {
             console.error("[DEBUG] Refresh failed:", error);
         }
 
-        // If we get here, refresh failed
         api.dispatch(clearCredentials());
     }
 

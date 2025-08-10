@@ -1,6 +1,6 @@
 import './App.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Home from "./components/Home.tsx";
+import Home from "./components/home/Home.tsx";
 import Products from "./components/products/Products.tsx";
 import Header from "./components/header/Header.tsx";
 import Farms from "./components/farms/Farms.tsx";
