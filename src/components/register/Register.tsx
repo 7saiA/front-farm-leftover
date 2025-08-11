@@ -134,7 +134,11 @@ const Register = () => {
                             variant="outlined"
                             fullWidth
                             required
-                            sx={{ borderRadius: 2 }}
+                            autoComplete="off"
+                            sx={{
+                                borderRadius: 2,
+                                form: { autocomplete: "off" }
+                            }}
                             value={formData.login}
                             onChange={handleChange}
                         />
@@ -146,7 +150,11 @@ const Register = () => {
                                 variant="outlined"
                                 fullWidth
                                 required
-                                sx={{ borderRadius: 2 }}
+                                autoComplete="off"
+                                sx={{
+                                    borderRadius: 2,
+                                    form: { autocomplete: "off" }
+                                }}
                                 value={formData.userName}
                                 onChange={handleChange}
                             />
@@ -159,7 +167,11 @@ const Register = () => {
                             variant="outlined"
                             fullWidth
                             required
-                            sx={{ borderRadius: 2 }}
+                            autoComplete="off"
+                            sx={{
+                                borderRadius: 2,
+                                form: { autocomplete: "off" }
+                            }}
                             value={formData.password}
                             onChange={handleChange}
                         />
@@ -171,7 +183,11 @@ const Register = () => {
                             variant="outlined"
                             fullWidth
                             required
-                            sx={{ borderRadius: 2 }}
+                            autoComplete="off"
+                            sx={{
+                                borderRadius: 2,
+                                form: { autocomplete: "off" }
+                            }}
                             value={formData.email}
                             onChange={handleChange}
                         />
@@ -182,7 +198,11 @@ const Register = () => {
                             variant="outlined"
                             fullWidth
                             required
-                            sx={{ borderRadius: 2 }}
+                            autoComplete="off"
+                            sx={{
+                                borderRadius: 2,
+                                form: { autocomplete: "off" }
+                            }}
                             value={formData.phone}
                             onChange={handleChange}
                         />
@@ -195,7 +215,11 @@ const Register = () => {
                                     variant="outlined"
                                     fullWidth
                                     required
-                                    sx={{ borderRadius: 2 }}
+                                    autoComplete="off"
+                                    sx={{
+                                        borderRadius: 2,
+                                        form: { autocomplete: "off" }
+                                    }}
                                     value={formData.farmName}
                                     onChange={handleChange}
                                 />
@@ -206,7 +230,11 @@ const Register = () => {
                                     variant="outlined"
                                     fullWidth
                                     required
-                                    sx={{ borderRadius: 2 }}
+                                    autoComplete="off"
+                                    sx={{
+                                        borderRadius: 2,
+                                        form: { autocomplete: "off" }
+                                    }}
                                     value={formData.city}
                                     onChange={handleChange}
                                 />
@@ -217,7 +245,11 @@ const Register = () => {
                                     variant="outlined"
                                     fullWidth
                                     required
-                                    sx={{ borderRadius: 2 }}
+                                    autoComplete="off"
+                                    sx={{
+                                        borderRadius: 2,
+                                        form: { autocomplete: "off" }
+                                    }}
                                     value={formData.street}
                                     onChange={handleChange}
                                 />

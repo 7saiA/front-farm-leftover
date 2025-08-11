@@ -4,9 +4,11 @@ import {Box, Button, Typography, Container, Fade} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import HomeGuestBody from "./HomeGuestBody.tsx";
 import HomeUserBody from "./HomeUserBody.tsx";
+import HomeFarmBody from "./HomeFarmBody.tsx";
 
 const Home = () => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+    const role = useSelector((state: RootState) => state.auth.role);
     const navigate = useNavigate();
 
     return (
@@ -88,7 +90,8 @@ const Home = () => {
                     </Box>
                 </Fade>
             </Container>
-            {isAuthenticated ? <HomeUserBody /> : <HomeGuestBody />}
+            {!isAuthenticated ? <HomeGuestBody /> : role === "USER" ?
+            <HomeUserBody/> : <HomeFarmBody/>}
         </Box>
     );
 };

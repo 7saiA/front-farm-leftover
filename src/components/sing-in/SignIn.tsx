@@ -122,7 +122,11 @@ const SignIn = () => {
                             variant="outlined"
                             fullWidth
                             required
-                            sx={{borderRadius: 2}}
+                            autoComplete="off"
+                            sx={{
+                                borderRadius: 2,
+                                form: { autocomplete: "off" }
+                            }}
                             value={formData.login}
                             onChange={handleChange}
                         />
@@ -134,7 +138,11 @@ const SignIn = () => {
                             variant="outlined"
                             fullWidth
                             required
-                            sx={{borderRadius: 2}}
+                            autoComplete="off"
+                            sx={{
+                                borderRadius: 2,
+                                form: { autocomplete: "off" }
+                            }}
                             value={formData.password}
                             onChange={handleChange}
                         />

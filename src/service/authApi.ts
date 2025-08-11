@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {clearCredentials, setCredentials} from "../features/authSlice.ts";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {clearCredentials, setCredentials, setRole} from "../features/authSlice.ts";
 import type {RootState} from "../app/store.ts";
 import {userApi} from "./userApi.ts";
 
@@ -25,7 +25,7 @@ export const authApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8080/auth",
         credentials: "include",
-        prepareHeaders: (headers, { getState }) => {
+        prepareHeaders: (headers, {getState}) => {
             headers.set("Content-Type", "application/json");
             const token = (getState() as RootState).auth.accessToken;
             if (token) {
@@ -36,7 +36,7 @@ export const authApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        register: builder.mutation<void, UserRegisterDto>({
+        register: builder.mutation<{role: string}, UserRegisterDto>({
             query: (userRegisterDto) => ({
                 url: '/register',
                 method: 'POST',
@@ -49,18 +49,24 @@ export const authApi = createApi({
                     dispatch(setCredentials({
                         accessToken: accessToken,
                     }));
+                    if (response.data) {
+                        const role = response.data.role;
+                        dispatch(setRole({
+                            role: role,
+                        }))
+                    }
                 } catch (err) {
                     console.error("Register failed:", err);
                 }
             }
         }),
-        signIn: builder.mutation<void, LoginPasswordDto>({
+        signIn: builder.mutation<{role: string}, LoginPasswordDto>({
             query: (loginPasswordDto) => ({
                 url: '/sign-in',
                 method: 'POST',
                 body: loginPasswordDto,
             }),
-            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+            async onQueryStarted(_, {dispatch, queryFulfilled}) {
                 try {
                     dispatch(userApi.util.resetApiState());
                     const response = await queryFulfilled;
@@ -68,6 +74,12 @@ export const authApi = createApi({
                     dispatch(setCredentials({
                         accessToken: accessToken,
                     }));
+                    if (response.data) {
+                        const role = response.data.role;
+                        dispatch(setRole({
+                            role: role,
+                        }))
+                    }
                 } catch (err) {
                     console.error("Sign-in failed:", err);
                 }
@@ -78,7 +90,7 @@ export const authApi = createApi({
                 url: '/refresh-token',
                 method: 'POST',
             }),
-            onQueryStarted(_, { dispatch, queryFulfilled }) {
+            onQueryStarted(_, {dispatch, queryFulfilled}) {
                 (async () => {
                     try {
                         const response = await queryFulfilled;
@@ -98,7 +110,7 @@ export const authApi = createApi({
                 url: "/logout",
                 method: "POST",
             }),
-            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+            async onQueryStarted(_, {dispatch, queryFulfilled}) {
                 try {
                     await queryFulfilled;
                     dispatch(userApi.util.resetApiState());
