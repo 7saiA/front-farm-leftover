@@ -14,9 +14,9 @@ const AddProduct = () => {
     const [addProduct] = useAddProductMutation();
     const [formData, setFormData] = useState({
         productName: '',
-        pricePerUnit: '0',
+        pricePerUnit: '',
         unit: '',
-        availableQuantity: 0
+        availableQuantity: ''
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +29,12 @@ const AddProduct = () => {
         setFormData(prev => ({ ...prev, unit: value }));
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!formData.unit) {
+            alert('Please select a unit');
+            return;
+        }
         try {
             const newProduct = {
                 productName: formData.productName,
@@ -41,7 +46,7 @@ const AddProduct = () => {
                 productName: '',
                 pricePerUnit: '',
                 unit: '',
-                availableQuantity: 0
+                availableQuantity: ''
             })
             const createdProduct = await addProduct(newProduct).unwrap();
             console.log('Product is created:', createdProduct);
@@ -60,7 +65,7 @@ const AddProduct = () => {
             >
                 <Box
                     component="form"
-                    noValidate
+                    onSubmit={handleSubmit}
                     autoComplete="off"
                 >
                     <Typography variant={"h4"}
@@ -168,7 +173,7 @@ const AddProduct = () => {
                               }}>
                             <Button
                                 size={"large"}
-                                onClick={handleSubmit}
+                                type={"submit"}
                                 variant="contained"
                                 color={"success"}
                                 sx={{

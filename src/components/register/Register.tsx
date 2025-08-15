@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useRegisterMutation } from '../../service/authApi.ts';
 import { useNavigate } from 'react-router-dom';
 import {Box, Button, CircularProgress, Divider, Fade, Paper, TextField, Typography} from "@mui/material";
-import IsLoading from "../is-loading-page/IsLoading.tsx";
-import ErrorPage from "../error-page/ErrorPage.tsx";
 
 const Register = () => {
     const [isFarmForm, setIsFarmForm] = useState(false);
@@ -18,8 +16,9 @@ const Register = () => {
         street: ''
     });
 
-    const [registerUser, { isLoading, error }] = useRegisterMutation();
+    const [registerUser, { isLoading }] = useRegisterMutation();
     const navigate = useNavigate();
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -28,41 +27,49 @@ const Register = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setFieldErrors({});
 
-        const userData = isFarmForm ? {
-            login: formData.login,
-            password: formData.password,
-            email: formData.email,
-            phone: formData.phone,
-            farmName: formData.farmName,
-            city: formData.city,
-            street: formData.street
-        } : {
-            login: formData.login,
-            userName: formData.userName,
-            password: formData.password,
-            email: formData.email,
-            phone: formData.phone,
-        };
+        const userData = isFarmForm
+            ? {
+                login: formData.login,
+                password: formData.password,
+                email: formData.email,
+                phone: formData.phone,
+                farmName: formData.farmName,
+                city: formData.city,
+                street: formData.street
+            }
+            : {
+                login: formData.login,
+                userName: formData.userName,
+                password: formData.password,
+                email: formData.email,
+                phone: formData.phone
+            };
 
         try {
             await registerUser(userData).unwrap();
             navigate('/');
-        } catch (err) {
+        } catch (err: any) {
             console.error('Registration failed:', err);
+
+            const code = err?.data?.code;
+
+            switch (code) {
+                case 'BAD_LOGIN':
+                    setFieldErrors({ login: 'A user with this login already exists' });
+                    break;
+                case 'BAD_NICKNAME':
+                    setFieldErrors({ nickName: 'A user with this nickname already exists' });
+                    break;
+                case 'BAD_FARM_NAME':
+                    setFieldErrors({ farmName: 'A farm with this name already exists' });
+                    break;
+                default:
+                    setFieldErrors({ general: 'Registration failed, please try again' });
+            }
         }
     };
-
-    if (isLoading) {
-        return <IsLoading/>
-    }
-
-    if (error) {
-        const errorMessage = 'status' in error
-            ? error.data as string
-            : 'An error occurred';
-        return <ErrorPage errorMessage={errorMessage}/>
-    }
 
     return (
         <Box
@@ -134,6 +141,8 @@ const Register = () => {
                             variant="outlined"
                             fullWidth
                             required
+                            error={!!fieldErrors.login}
+                            helperText={fieldErrors.login || "3–10 characters, only Latin letters and digits, must be unique"}
                             autoComplete="off"
                             sx={{
                                 borderRadius: 2,
@@ -150,6 +159,8 @@ const Register = () => {
                                 variant="outlined"
                                 fullWidth
                                 required
+                                error={!!fieldErrors.nickName}
+                                helperText={fieldErrors.nickName || "3–10 characters, only Latin letters and digits, must be unique"}
                                 autoComplete="off"
                                 sx={{
                                     borderRadius: 2,
@@ -215,6 +226,8 @@ const Register = () => {
                                     variant="outlined"
                                     fullWidth
                                     required
+                                    error={!!fieldErrors.farmName}
+                                    helperText={fieldErrors.farmName || "3–10 characters for each word, can be used 2 words, only Latin letters and digits, must be unique"}
                                     autoComplete="off"
                                     sx={{
                                         borderRadius: 2,

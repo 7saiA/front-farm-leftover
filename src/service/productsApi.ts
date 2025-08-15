@@ -23,7 +23,7 @@ interface NewProductDto {
     productName: string;
     pricePerUnit: string;
     unit: string;
-    availableQuantity: number;
+    availableQuantity: string;
 }
 
 export const productsApi = createApi({
