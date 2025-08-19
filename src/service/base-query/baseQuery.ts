@@ -5,16 +5,14 @@ import {clearCredentials, setCredentials} from "../../features/authSlice.ts";
 const baseQuery = fetchBaseQuery({
     baseUrl: "http://localhost:8080",
     prepareHeaders: (headers, { getState }) => {
-        headers.set("Content-Type", "application/json");
         const token = (getState() as RootState).auth.accessToken;
         if (token) {
             headers.set("Authorization", `Bearer ${token}`);
         }
-
         return headers;
     },
     credentials: "include"
-})
+});
 
 export const baseQueryWithRefresh: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
     const initialResult = await baseQuery(args, api, extraOptions);

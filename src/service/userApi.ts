@@ -29,6 +29,7 @@ export interface ProductForFarmDto {
     pricePerUnit: number;
     unit: string;
     availableQuantity: number;
+    imgUrl: string;
 }
 
 export const userApi = createApi({
@@ -47,7 +48,7 @@ export const userApi = createApi({
             query: () => ({
                 url: '/users/profile',
                 method: 'GET',
-                // extraPoints: { maxRetries: 2 },
+                extraPoints: { maxRetries: 2 },
             }),
             providesTags: ['User']
         }),

@@ -12,6 +12,7 @@ import SearchResultPage from "./components/search-result/SearchResultPage.tsx";
 import Profile from "./components/profile/Profile.tsx";
 import Cart from "./components/cart/Cart.tsx";
 
+
 function App() {
 
     return (

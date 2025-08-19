@@ -9,6 +9,9 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
+import {customCompose} from "../../utils/customCompose.ts";
+import {withAuth} from "../../hoc/withAuth.tsx";
 
 const Cart = () => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -137,4 +140,4 @@ const Cart = () => {
     );
 };
 
-export default Cart;
+export default customCompose(withRememberMe, withAuth)(Cart);

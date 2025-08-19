@@ -9,6 +9,8 @@ import ProfileCard from "../profile-card/ProfileCard.tsx";
 import AddProduct from "../profile-add-product/AddProduct.tsx";
 import ProfileProductList from "../profile-product-list/ProfileProductList.tsx";
 import {withAuth} from "../../hoc/withAuth.tsx";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
+import {customCompose} from "../../utils/customCompose.ts";
 
 const Profile = () => {
     const {data, error, isLoading} = useGetCurrentUserQuery();
@@ -62,4 +64,4 @@ const Profile = () => {
     )
 }
 
-export default withAuth(Profile);
+export default customCompose(withRememberMe, withAuth)(Profile);

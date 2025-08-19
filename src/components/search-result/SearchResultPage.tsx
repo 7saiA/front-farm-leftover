@@ -1,6 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import {useSearchQuery} from "../../service/productsApi.ts";
 import ErrorPage from "../error-page/ErrorPage.tsx";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
+import {customCompose} from "../../utils/customCompose.ts";
+import {withAuth} from "../../hoc/withAuth.tsx";
 
 const SearchResultPage = () => {
     const location = useLocation();
@@ -61,4 +64,4 @@ const SearchResultPage = () => {
     );
 };
 
-export default SearchResultPage;
+export default customCompose(withRememberMe, withAuth)(SearchResultPage);

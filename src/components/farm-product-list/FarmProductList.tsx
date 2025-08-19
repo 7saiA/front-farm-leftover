@@ -34,7 +34,7 @@ const FarmProductList = ({farmProducts}: Props) => {
                                   }}>
                                 <CardMedia
                                     sx={{height: 160}}
-                                    image={"/images/pic.jpg"}
+                                    image={product.imgUrl ? product.imgUrl : "/images/pic.jpg"}
                                     title={"product"}/>
                                 <CardContent>
                                     <Typography gutterBottom

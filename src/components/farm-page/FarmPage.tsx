@@ -9,6 +9,9 @@ import ErrorPage from "../error-page/ErrorPage.tsx";
 import {useGetFarmByNameQuery} from "../../service/userApi.ts";
 import FarmCard from "../farm-card/FarmCard.tsx";
 import FarmProductList from "../farm-product-list/FarmProductList.tsx";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
+import {customCompose} from "../../utils/customCompose.ts";
+import {withAuth} from "../../hoc/withAuth.tsx";
 
 const FarmPage = () => {
     const {farmName} = useParams<{ farmName: string }>();
@@ -100,4 +103,4 @@ const FarmPage = () => {
     )
 }
 
-export default FarmPage;
+export default customCompose(withRememberMe, withAuth)(FarmPage);

@@ -85,9 +85,10 @@ export const authApi = createApi({
                 }
             }
         }),
-        refreshToken: builder.mutation<void, void>({
-            query: () => ({
+        refreshToken: builder.mutation<{role: string}, {remember?: string}>({
+            query: ({remember = ""}) => ({
                 url: '/refresh-token',
+                params: {remember},
                 method: 'POST',
             }),
             onQueryStarted(_, {dispatch, queryFulfilled}) {
@@ -98,6 +99,12 @@ export const authApi = createApi({
                         dispatch(setCredentials({
                             accessToken: accessToken,
                         }));
+                        if (response.data) {
+                            const role = response.data.role;
+                            dispatch(setRole({
+                                role: role,
+                            }))
+                        }
                     } catch (err) {
                         console.error("Refresh token failed:", err);
                         dispatch(clearCredentials());

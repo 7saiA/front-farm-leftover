@@ -3,6 +3,9 @@ import {Box, Fade, Typography} from "@mui/material";
 import FarmList from "../farm-list/FarmList.tsx";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
+import {customCompose} from "../../utils/customCompose.ts";
+import {withAuth} from "../../hoc/withAuth.tsx";
 
 const Farms = () => {
 
@@ -62,4 +65,4 @@ const Farms = () => {
     )
 }
 
-export default Farms;
+export default customCompose(withRememberMe, withAuth)(Farms);

@@ -4,12 +4,14 @@ interface AuthState {
     accessToken: string | null;
     role: string | null;
     isAuthenticated: boolean;
+    rememberMe: boolean;
 }
 
 const initialState: AuthState = {
     accessToken: null,
     role: null,
     isAuthenticated: false,
+    rememberMe: false,
 };
 
 const authSlice = createSlice({
@@ -33,13 +35,23 @@ const authSlice = createSlice({
         ) => {
             state.role = action.payload.role;
         },
+        setRememberMe: (state, action: PayloadAction<boolean>) => {
+            state.rememberMe = action.payload;
+            if (action.payload) {
+                localStorage.setItem('rememberMe', '1');
+            } else {
+                localStorage.removeItem('rememberMe');
+            }
+        },
         clearCredentials: (state) => {
             state.accessToken = null;
             state.role = null;
             state.isAuthenticated = false;
+            state.rememberMe = false;
+            localStorage.removeItem("rememberMe");
         },
     },
 });
 
-export const { setCredentials, setRole, clearCredentials } = authSlice.actions;
+export const { setCredentials, setRole, clearCredentials, setRememberMe} = authSlice.actions;
 export default authSlice.reducer;

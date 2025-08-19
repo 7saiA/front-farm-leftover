@@ -9,6 +9,7 @@ export interface ProductDto {
     unit: string;
     availableQuantity: number;
     farmName: string;
+    imgUrl: string;
 }
 
 export interface FarmProductDto {
@@ -17,13 +18,14 @@ export interface FarmProductDto {
     pricePerUnit: string;
     unit: string;
     availableQuantity: number;
+    imgUrl: string;
 }
 
 interface NewProductDto {
     productName: string;
     pricePerUnit: string;
     unit: string;
-    availableQuantity: string;
+    availableQuantity: number;
 }
 
 export const productsApi = createApi({
@@ -33,6 +35,21 @@ export const productsApi = createApi({
     keepUnusedDataFor: 60,
     tagTypes: ['Product'],
     endpoints: (builder) => ({
+        addProduct: builder.mutation<FarmProductDto, { newProduct: NewProductDto, file?: File }>({
+            query: ({newProduct, file}) => {
+                const formData = new FormData();
+                formData.append("newProduct", JSON.stringify(newProduct));
+                if (file) {
+                    formData.append("file", file);
+                }
+                return {
+                    url: "/products/add-product",
+                    method: "POST",
+                    body: formData,
+                }
+            },
+            invalidatesTags: ['Product'],
+        }),
         getProducts: builder.query<ProductDto[], { sort?: string }>({
             query: ({sort = 'newest'} = {}) => ({
                 url: '/products/all-products',
@@ -40,20 +57,19 @@ export const productsApi = createApi({
             }),
             providesTags: ['Product'],
         }),
-        addProduct: builder.mutation<FarmProductDto, NewProductDto>({
-            query: (newProductDto ) => ({
-                url: "/products/add-product",
-                method: "POST",
-                body: newProductDto,
-            }),
-            invalidatesTags: ['Product'],
-        }),
-        updateProduct: builder.mutation<FarmProductDto, {productId: string, newProductDto: NewProductDto}>({
-            query: ({productId, newProductDto}) => ({
-                url: `/products/${productId}`,
-                method: "PUT",
-                body: newProductDto,
-            }),
+        updateProduct: builder.mutation<FarmProductDto, { productId: string, product: NewProductDto, file?: File }>({
+            query: ({productId, product, file}) => {
+                const formData = new FormData();
+                formData.append("product", JSON.stringify(product));
+                if (file) {
+                    formData.append("file", file);
+                }
+                return {
+                    url: `/products/${productId}`,
+                    method: "PUT",
+                    body: formData,
+                }
+            },
             invalidatesTags: ['Product'],
         }),
         deleteProduct: builder.mutation<void, string>({
@@ -73,12 +89,12 @@ export const productsApi = createApi({
         search: builder.query<{
             products: ProductDto[];
             farms: FarmDto[];
-        },string>({
+        }, string>({
             query: (query) => ({
                 url: "/search",
                 params: {query}
             }),
-            
+
         })
     })
 });

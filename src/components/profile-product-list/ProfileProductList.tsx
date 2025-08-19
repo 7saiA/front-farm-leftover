@@ -20,6 +20,9 @@ import {
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
 import {useState} from "react";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
+import {customCompose} from "../../utils/customCompose.ts";
 import {withAuth} from "../../hoc/withAuth.tsx";
 
 const ProfileProductList = () => {
@@ -34,6 +37,24 @@ const ProfileProductList = () => {
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [productToEdit, setProductToEdit] = useState<FarmProductDto | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+
+    const [selectedFile, setSelectedFile] = useState<File | undefined>();
+    const [preview, setPreview] = useState<string | null>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert("File is too large. Maximum size is 5MB.");
+                return;
+            }
+
+            setSelectedFile(file);
+            setPreview(URL.createObjectURL(file));
+        }
+    };
 
     if (isLoading) {
         return <IsLoading/>
@@ -70,18 +91,30 @@ const ProfileProductList = () => {
     const handleSaveEdit = async () => {
         if (!productToEdit) return;
 
+        if (
+            !productToEdit.productName.trim() ||
+            !productToEdit.pricePerUnit ||
+            !productToEdit.unit ||
+            productToEdit.availableQuantity === null || productToEdit.availableQuantity === undefined
+        ) {
+            alert("Please fill in all fields before saving.");
+            return;
+        }
         setIsEditing(true);
         try {
             await updateProduct({
                 productId: productToEdit.productId,
-                newProductDto: {
+                product: {
                     productName: productToEdit.productName,
                     pricePerUnit: productToEdit.pricePerUnit,
                     unit: productToEdit.unit,
                     availableQuantity: productToEdit.availableQuantity
-                }
+                },
+                file: selectedFile,
             }).unwrap();
             setOpenEditDialog(false);
+            setSelectedFile(undefined);
+            setPreview(null);
         } catch (error) {
             console.error('Failed to update product:', error);
         } finally {
@@ -90,6 +123,8 @@ const ProfileProductList = () => {
     };
 
     const handleCancelEdit = () => {
+        setSelectedFile(undefined);
+        setPreview(null);
         setOpenEditDialog(false);
         setProductToEdit(null);
     };
@@ -149,7 +184,7 @@ const ProfileProductList = () => {
                                   }}>
                                 <CardMedia
                                     sx={{height: 160}}
-                                    image={"/images/pic.jpg"}
+                                    image={product.imgUrl ? product.imgUrl : "/images/pic.jpg"}
                                     title={"product"}/>
                                 <CardContent>
                                     <Typography gutterBottom
@@ -199,6 +234,36 @@ const ProfileProductList = () => {
                 <DialogContent>
                     {productToEdit && (
                         <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, pt: 2}}>
+                            <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", py: 1}}>
+                                {preview && (
+                                    <Box
+                                        component="img"
+                                        src={preview}
+                                        alt="Product preview"
+                                        sx={{
+                                            width: 150,
+                                            height: 150,
+                                            objectFit: "cover",
+                                            borderRadius: 2,
+                                            mb: 2,
+                                            boxShadow: 3
+                                        }}
+                                    />
+                                )}
+                                <Button
+                                    component="label"
+                                    variant="contained"
+                                    startIcon={<CloudUploadIcon/>}
+                                >
+                                    Add product image
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        hidden
+                                        onChange={handleFileChange}
+                                    />
+                                </Button>
+                            </Box>
                             <TextField
                                 label="Product Name"
                                 name="productName"
@@ -293,4 +358,4 @@ const ProfileProductList = () => {
     )
 }
 
-export default withAuth(ProfileProductList);
+export default customCompose(withRememberMe, withAuth)(ProfileProductList);

@@ -14,8 +14,12 @@ import {
     TextField,
     Typography
 } from "@mui/material";
+import {useDispatch} from "react-redux";
+import {setRememberMe} from "../../features/authSlice.ts";
 
 const SignIn = () => {
+    const dispatch = useDispatch();
+    const [remember, setRemember] = useState(false);
     const [formData, setFormData] = useState({
         login: '',
         password: ''
@@ -38,6 +42,7 @@ const SignIn = () => {
                 login: formData.login,
                 password: formData.password
             }).unwrap();
+            dispatch(setRememberMe(remember));
 
             navigate(location.state?.from || '/');
         } catch (err) {
@@ -154,7 +159,13 @@ const SignIn = () => {
                             my: 1
                         }}>
                             <FormControlLabel
-                                control={<Checkbox color="info"/>}
+                                control={
+                                <Checkbox
+                                    color="info"
+                                    checked={remember}
+                                    onChange={(e) => setRemember(e.target.checked)}
+                                />
+                            }
                                 label="Remember me"
                             />
                             <Button

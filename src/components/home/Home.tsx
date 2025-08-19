@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import HomeGuestBody from "./HomeGuestBody.tsx";
 import HomeUserBody from "./HomeUserBody.tsx";
 import HomeFarmBody from "./HomeFarmBody.tsx";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
 
 const Home = () => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -96,4 +97,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default withRememberMe(Home);

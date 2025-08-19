@@ -12,6 +12,9 @@ import {
 } from "@mui/material";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
+import {customCompose} from "../../utils/customCompose.ts";
+import {withAuth} from "../../hoc/withAuth.tsx";
 
 const Product = () => {
     const [sortBy, setSortBy] = useState("newest");
@@ -94,4 +97,4 @@ const Product = () => {
     );
 };
 
-export default Product;
+export default customCompose(withRememberMe, withAuth)(Product);
