@@ -1,18 +1,29 @@
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {useSearchQuery} from "../../service/productsApi.ts";
 import ErrorPage from "../error-page/ErrorPage.tsx";
 import {withRememberMe} from "../../hoc/withRememberMe.tsx";
 import {customCompose} from "../../utils/customCompose.ts";
 import {withAuth} from "../../hoc/withAuth.tsx";
+import IsLoading from "../is-loading-page/IsLoading.tsx";
+import {Box, Button, Typography} from "@mui/material";
+import ProductList from "../product-list/ProductList.tsx";
+import FarmList from "../farm-list/FarmList.tsx";
+import {useState} from "react";
 
 const SearchResultPage = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const searchQuery = queryParams.get('q') || '';
 
-    const { data, isLoading, error } = useSearchQuery(searchQuery,{
+    const {data, isLoading, error} = useSearchQuery(searchQuery, {
         skip: !searchQuery
     });
+
+    const [selectedTab, setSelectedTab] = useState<'farms' | 'products'>('farms');
+
+    if (isLoading) {
+        return <IsLoading/>
+    }
 
     if (error) {
         const errorMessage = (
@@ -24,43 +35,88 @@ const SearchResultPage = () => {
             ? error.data
             : 'An error occurred';
 
-        return <ErrorPage errorMessage={errorMessage} />;
+        return <ErrorPage errorMessage={errorMessage}/>;
     }
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">
-                Search Results for "{searchQuery || '...'}"
-            </h1>
-
-            {isLoading && <p>Loading results...</p>}
+        <Box sx={{height: "100vh", display: "flex", flexDirection: "column"}}>
+            <Typography
+                variant="h4"
+                fontWeight="bold"
+                align="center"
+                gutterBottom
+                sx={{py: 2}}
+            >
+                Search Results for "{searchQuery || "..."}"
+            </Typography>
 
             {!searchQuery && (
-                <p>Please enter a search term</p>
+                <Typography color="info" align="center">
+                    Please enter a search term
+                </Typography>
             )}
 
             {data && searchQuery && (
-                <>
-                    <section className="mb-8">
-                        <h2 className="text-xl font-semibold mb-3">Farms</h2>
-                        { (
-                            data.farms.map(farm => (
-                                <div key={farm.phone}>{farm.farmName}</div>
-                            ))
-                        )}
-                    </section>
+                <Box sx={{flex: 1, display: "flex", flexDirection: "column", px: 2}}>
+                    <Box sx={{display: "flex", justifyContent: "center", mb: 2}}>
+                        <Button
+                            onClick={() => setSelectedTab('farms')}
+                            variant={selectedTab === 'farms' ? "contained" : "outlined"}
+                            color={"success"}
+                            sx={{mx: 2}}
+                        >
+                            Farms
+                        </Button>
+                        <Button
+                            onClick={() => setSelectedTab('products')}
+                            variant={selectedTab === 'products' ? "contained" : "outlined"}
+                            color={"primary"}
+                            sx={{mx: 2}}
+                        >
+                            Products
+                        </Button>
+                    </Box>
 
-                    <section>
-                        <h2 className="text-xl font-semibold mb-3">Products</h2>
-                        {(
-                            data.products.map(product => (
-                                <div key={product.productId}>{product.productName}</div>
-                            ))
-                        )}
-                    </section>
-                </>
+                    {selectedTab === 'farms' && (
+                        data.farms && data.farms.length > 0 ? (
+                            <FarmList farms={data.farms}/>
+                        ) : (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    mt: 8
+                                }}
+                            >
+                                <Typography align="center" color="success" variant="h4">
+                                    No farms found
+                                </Typography>
+                            </Box>
+                        )
+                    )}
+
+                    {selectedTab === 'products' && (
+                        data.products && data.products.length > 0 ? (
+                            <ProductList products={data.products}/>
+                        ) : (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    mt: 8
+                                }}
+                            >
+                                <Typography align="center" color="primary" variant="h4">
+                                    No products found
+                                </Typography>
+                            </Box>
+                        )
+                    )}
+                </Box>
             )}
-        </div>
+        </Box>
     );
 };
 

@@ -1,5 +1,5 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
-import type {FarmDto} from "./userApi.ts";
+import type {AllFarmDto} from "./userApi.ts";
 import {baseQueryWithRefresh} from "./base-query/baseQuery.ts";
 
 export interface ProductDto {
@@ -88,13 +88,12 @@ export const productsApi = createApi({
         }),
         search: builder.query<{
             products: ProductDto[];
-            farms: FarmDto[];
+            farms: AllFarmDto[];
         }, string>({
             query: (query) => ({
-                url: "/search",
-                params: {query}
+                url: "/products/search",
+                params: {query: query}
             }),
-
         })
     })
 });
