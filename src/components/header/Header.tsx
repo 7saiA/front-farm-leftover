@@ -36,6 +36,7 @@ const Header = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+    const role = useSelector((state: RootState) => state.auth.role);
     const [logout] = useLogoutMutation();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -342,17 +343,19 @@ const Header = () => {
                     )}
 
                     <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
-                        <IconButton component={RouterLink} to="/cart" aria-label="Go to cart">
-                            <Badge badgeContent={0} color="primary">
-                                <ShoppingCartSharpIcon
-                                    sx={{
-                                        color: "black",
-                                        "&:hover": { color: "rebeccapurple" },
-                                        fontSize: "2.5rem",
-                                    }}
-                                />
-                            </Badge>
-                        </IconButton>
+                        {role === "USER" && (
+                            <IconButton component={RouterLink} to="/cart" aria-label="Go to cart">
+                                <Badge badgeContent={0} color="primary">
+                                    <ShoppingCartSharpIcon
+                                        sx={{
+                                            color: "black",
+                                            "&:hover": { color: "rebeccapurple" },
+                                            fontSize: "2.5rem",
+                                        }}
+                                    />
+                                </Badge>
+                            </IconButton>
+                        )}
 
                         {!isMobile && (
                             <>

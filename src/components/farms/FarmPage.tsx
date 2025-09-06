@@ -7,11 +7,11 @@ import {useParams} from "react-router-dom";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
 import {useGetFarmByNameQuery} from "../../service/userApi.ts";
-import FarmCard from "../farm-card/FarmCard.tsx";
-import FarmProductList from "../farm-product-list/FarmProductList.tsx";
+import FarmCard from "./FarmCard.tsx";
 import {withRememberMe} from "../../hoc/withRememberMe.tsx";
 import {customCompose} from "../../utils/customCompose.ts";
 import {withAuth} from "../../hoc/withAuth.tsx";
+import ProductList from "../products/ProductList.tsx";
 
 const FarmPage = () => {
     const {farmName} = useParams<{ farmName: string }>();
@@ -92,7 +92,7 @@ const FarmPage = () => {
                 <FarmCard farm={farm} isFarmPage={true}/>
             </Box>
             {farm.products && farm.products.length > 0 ? (
-                <FarmProductList farmProducts={farm.products}/>
+                <ProductList products={farm.products} isFarmPage={true}/>
             ) : (
                 <Typography color={"secondary"}
                             variant={"h3"}>

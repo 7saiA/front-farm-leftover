@@ -5,9 +5,9 @@ import {
     Box,
     Typography
 } from "@mui/material";
-import ProfileCard from "../profile-card/ProfileCard.tsx";
-import AddProduct from "../profile-add-product/AddProduct.tsx";
-import ProfileProductList from "../profile-product-list/ProfileProductList.tsx";
+import ProfileCard from "./ProfileCard.tsx";
+import AddProduct from "./AddProduct.tsx";
+import ProfileProductList from "./ProfileProductList.tsx";
 import {withAuth} from "../../hoc/withAuth.tsx";
 import {withRememberMe} from "../../hoc/withRememberMe.tsx";
 import {customCompose} from "../../utils/customCompose.ts";

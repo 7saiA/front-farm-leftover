@@ -12,7 +12,6 @@ import {
     Typography
 } from "@mui/material";
 import {
-    type FarmProductDto,
     useDeleteProductMutation,
     useGetProductsForCurrentFarmQuery,
     useUpdateProductMutation
@@ -24,6 +23,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {withRememberMe} from "../../hoc/withRememberMe.tsx";
 import {customCompose} from "../../utils/customCompose.ts";
 import {withAuth} from "../../hoc/withAuth.tsx";
+import type {FarmProductDto} from "../../models/ProductModels.ts";
 
 const ProfileProductList = () => {
     const [deleteProduct] = useDeleteProductMutation();

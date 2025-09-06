@@ -7,10 +7,13 @@ import Farms from "./components/farms/Farms.tsx";
 import Footer from "./components/footer/Footer.tsx";
 import SignIn from "./components/sing-in/SignIn.tsx";
 import Register from "./components/register/Register.tsx";
-import FarmPage from "./components/farm-page/FarmPage.tsx";
+import FarmPage from "./components/farms/FarmPage.tsx";
 import SearchResultPage from "./components/search-result/SearchResultPage.tsx";
 import Profile from "./components/profile/Profile.tsx";
 import Cart from "./components/cart/Cart.tsx";
+import Checkout from "./components/checkout/Checkout.tsx";
+import Orders from "./components/orders/Orders.tsx";
+import OrderInfo from "./components/orders/OrderInfo.tsx";
 
 
 function App() {
@@ -28,6 +31,9 @@ function App() {
                 <Route path={"/search"} element={<SearchResultPage/>}/>
                 <Route path={"/profile"} element={<Profile/>}/>
                 <Route path={"/cart"} element={<Cart/>}/>
+                <Route path={'/checkout'} element={<Checkout/>}/>
+                <Route path={'/orders'} element={<Orders/>}/>
+                <Route path={'/orders/:orderId'} element={<OrderInfo/>}/>
             </Routes>
             <Footer/>
         </BrowserRouter>

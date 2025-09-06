@@ -1,6 +1,6 @@
 import {Button, Card, CardActions, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import type {AllFarmDto} from "../../service/userApi.ts";
+import type {AllFarmDto} from "../../models/UserModels.ts";
 
 interface Props {
     farm: AllFarmDto;
@@ -15,7 +15,7 @@ const FarmCard = ({farm, isFarmPage}: Props) => {
     };
 
     return (
-        <Fade in={true} timeout={1000} key={farm.farmName}>
+        <Fade in={true} timeout={1000}>
             <Paper elevation={8}
                    sx={{borderRadius: 2}}>
                 <Card variant="elevation"

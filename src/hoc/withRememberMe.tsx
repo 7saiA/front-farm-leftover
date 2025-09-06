@@ -20,7 +20,7 @@ export function withRememberMe<T extends Object>(WrappedComponent: React.Compone
                     try {
                         await refresh({ remember: "remember" }).unwrap();
                     } catch {
-                        // nothing
+                        //TODO
                     }
                 }
                 setChecked(true);

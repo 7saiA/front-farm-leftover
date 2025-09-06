@@ -2,23 +2,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {clearCredentials, setCredentials, setRole} from "../features/authSlice.ts";
 import type {RootState} from "../app/store.ts";
 import {userApi} from "./userApi.ts";
-
-export interface UserRegisterDto {
-    login: string;
-    userName?: string;
-    email: string;
-    password: string;
-    phone: string;
-    farmName?: string;
-    city?: string;
-    street?: string;
-}
-
-export interface LoginPasswordDto {
-    login: string;
-    password: string;
-}
-
+import type {LoginPasswordDto, UserRegisterDto} from "../models/AuthModels.ts";
 
 export const authApi = createApi({
     reducerPath: "authApi",

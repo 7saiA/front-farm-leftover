@@ -1,6 +1,6 @@
 import {useGetProductsQuery} from "../../service/productsApi.ts";
 import {useState} from "react";
-import ProductList from "../product-list/ProductList.tsx";
+import ProductList from "./ProductList.tsx";
 import {
     Box,
     Fade,
@@ -86,7 +86,7 @@ const Product = () => {
                 </Typography>
             </Fade>
             {data && data.length > 0 ? (
-                <ProductList products={data}/>
+                <ProductList products={data} isFarmPage={false}/>
             ) : (
                 <Typography color={"secondary"}
                             variant={"h3"}>

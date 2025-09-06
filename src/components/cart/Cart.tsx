@@ -1,23 +1,18 @@
-import {Box, Typography, List, Button, IconButton, CardContent, Card} from "@mui/material";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../app/store.ts";
+import {Box, Typography, Fade} from "@mui/material";
 import {
     useGetCartQuery,
-    useClearCartMutation,
-    useDeleteCartItemMutation
 } from "../../service/cartApi.ts";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
 import {withRememberMe} from "../../hoc/withRememberMe.tsx";
 import {customCompose} from "../../utils/customCompose.ts";
 import {withAuth} from "../../hoc/withAuth.tsx";
+import IsLoading from "../is-loading-page/IsLoading.tsx";
+import ErrorPage from "../error-page/ErrorPage.tsx";
+import CartList from "./CartList.tsx";
 
 const Cart = () => {
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-    const { data: cart } = useGetCartQuery();
-    const [clearCart] = useClearCartMutation();
-    const [deleteCartItem] = useDeleteCartItemMutation();
+    const { data: cart, error, isLoading } = useGetCartQuery();
 
     const [snackbar, setSnackbar] = useState({
         open: false,
@@ -29,96 +24,42 @@ const Cart = () => {
         setSnackbar({ ...snackbar, open: false });
     };
 
-    const handleClearCart = async () => {
-        try {
-            await clearCart().unwrap();
-            setSnackbar({
-                open: true,
-                message: 'Cart cleared successfully',
-                severity: 'success',
-            });
-        } catch (err) {
-            console.error('Clearing cart failed:', err);
-            setSnackbar({
-                open: true,
-                message: 'Failed to clear cart',
-                severity: 'error',
-            });
-        }
-    };
+    if (isLoading) {
+        return <IsLoading/>
+    }
 
-    const handleDeleteItem = async (cartItemId: number) => {
-        try {
-            await deleteCartItem({ cartItemId }).unwrap();
-            setSnackbar({
-                open: true,
-                message: 'Item removed from cart',
-                severity: 'success',
-            });
-        } catch (err) {
-            console.error('Delete item failed:', err);
-            setSnackbar({
-                open: true,
-                message: 'Failed to remove item',
-                severity: 'error',
-            });
-        }
-    };
+    if (error) {
+        const errorMessage = (
+            error &&
+            typeof error === 'object' &&
+            'data' in error &&
+            typeof error.data === 'string'
+        )
+            ? error.data
+            : 'An error occurred';
 
-    if (!isAuthenticated) {
-        return (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-                <Typography variant="h6">Please log in to view your cart</Typography>
-            </Box>
-        );
+        return <ErrorPage errorMessage={errorMessage} />;
     }
 
     return (
-        <Box sx={{ p: 4 }}>
-            <Typography variant="h4" gutterBottom>Your Cart</Typography>
+        <Box
+            sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+            }}
+        >
+            <Fade in={true} timeout={1000}>
+                <Typography variant="h4" gutterBottom color={"primary"}>
+                    Your Cart
+                </Typography>
+            </Fade>
 
             {cart?.items?.length ? (
-                <>
-
-                    <List sx={{ width: '100%', maxWidth: 600, mx: 'auto' }}>
-                        {cart.items.map((item) => (
-                            <Card key={item.productId} variant="outlined" sx={{ mb: 2 }}>
-                                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Box>
-                                        <Typography variant="h6" fontWeight="bold">{item.productName}</Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {item.pricePerUnit} per {item.unit}
-                                        </Typography>
-                                        <Typography variant="body2">Qty: {item.quantity}</Typography>
-                                        <Typography variant="subtitle2" color="text.primary" sx={{ mt: 0.5 }}>
-                                            Subtotal: {item.subtotal}
-                                        </Typography>
-                                    </Box>
-
-                                    <IconButton
-                                        color="error"
-                                        onClick={() => handleDeleteItem(item.cartItemId)}
-                                        aria-label="delete"
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </List>
-                    <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Button
-                            variant="contained"
-                            color="error"
-                            onClick={handleClearCart}
-                        >
-                            Clear Cart
-                        </Button>
-                        <Typography variant="h5">
-                            Total: {cart.totalPrice}
-                        </Typography>
-                    </Box>
-                </>
+                <CartList cart={cart} setSnackbar={setSnackbar}/>
             ) : (
                 <Typography variant="body1">Your cart is empty</Typography>
             )}
@@ -131,7 +72,7 @@ const Cart = () => {
                 <Alert
                     onClose={handleCloseSnackbar}
                     severity={snackbar.severity}
-                    sx={{ width: '100%' }}
+                    sx={{ width: "100%" }}
                 >
                     {snackbar.message}
                 </Alert>

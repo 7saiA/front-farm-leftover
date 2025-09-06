@@ -1,32 +1,7 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
-import type {AllFarmDto} from "./userApi.ts";
 import {baseQueryWithRefresh} from "./base-query/baseQuery.ts";
-
-export interface ProductDto {
-    productId: string;
-    productName: string;
-    pricePerUnit: string;
-    unit: string;
-    availableQuantity: number;
-    farmName: string;
-    imgUrl: string;
-}
-
-export interface FarmProductDto {
-    productId: string;
-    productName: string;
-    pricePerUnit: string;
-    unit: string;
-    availableQuantity: number;
-    imgUrl: string;
-}
-
-interface NewProductDto {
-    productName: string;
-    pricePerUnit: string;
-    unit: string;
-    availableQuantity: number;
-}
+import type {FarmProductDto, NewProductDto, ProductDto} from "../models/ProductModels.ts";
+import type {AllFarmDto} from "../models/UserModels.ts";
 
 export const productsApi = createApi({
     reducerPath: 'productsApi',

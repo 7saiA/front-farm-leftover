@@ -1,6 +1,6 @@
 import {Box} from "@mui/material";
-import FarmCard from "../farm-card/FarmCard.tsx";
-import type {AllFarmDto} from "../../service/userApi.ts";
+import FarmCard from "./FarmCard.tsx";
+import type {AllFarmDto} from "../../models/UserModels.ts";
 
 interface Props {
     farms: AllFarmDto[];
@@ -23,7 +23,7 @@ const FarmList = ({farms}: Props) => {
             gap: 4,
         }}>
             {farms.map((farm) => (
-                <FarmCard farm={farm}/>
+                <FarmCard key={farm.farmName} farm={farm}/>
             ))}
         </Box>
     )

@@ -1,27 +1,6 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
 import {baseQueryWithRefresh} from "./base-query/baseQuery.ts";
-
-export interface AddToCartDto {
-    productId: string;
-    quantity: number;
-}
-
-export interface CartItemDto {
-    cartItemId: number;
-    productId: string;
-    productName: string;
-    pricePerUnit: string;
-    unit: string;
-    quantity: number;
-    subtotal: string;
-}
-
-export interface CartResponseDto {
-    cartId: string;
-    items: CartItemDto[];
-    totalPrice: string;
-
-}
+import type {AddToCartDto, CartResponseDto} from "../models/CartModels.ts";
 
 export const cartApi = createApi({
     reducerPath: 'cartApi',

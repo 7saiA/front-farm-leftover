@@ -1,5 +1,5 @@
-import type {UserDto} from "../../service/userApi.ts";
 import {Card, CardContent, CardMedia, Fade, Paper, Typography} from "@mui/material";
+import type {UserDto} from "../../models/UserModels.ts";
 
 interface Props {
     user: UserDto;

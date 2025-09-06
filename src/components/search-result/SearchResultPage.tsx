@@ -6,8 +6,8 @@ import {customCompose} from "../../utils/customCompose.ts";
 import {withAuth} from "../../hoc/withAuth.tsx";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import {Box, Button, Typography} from "@mui/material";
-import ProductList from "../product-list/ProductList.tsx";
-import FarmList from "../farm-list/FarmList.tsx";
+import ProductList from "../products/ProductList.tsx";
+import FarmList from "../farms/FarmList.tsx";
 import {useState} from "react";
 
 const SearchResultPage = () => {
@@ -98,7 +98,7 @@ const SearchResultPage = () => {
 
                     {selectedTab === 'products' && (
                         data.products && data.products.length > 0 ? (
-                            <ProductList products={data.products}/>
+                            <ProductList products={data.products} isFarmPage={false}/>
                         ) : (
                             <Box
                                 sx={{

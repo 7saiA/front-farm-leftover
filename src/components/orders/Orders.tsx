@@ -1,15 +1,14 @@
-import {useGetFarmsQuery} from "../../service/userApi.ts";
+import {useGetMyOrdersQuery} from "../../service/orderApi.ts";
 import {Box, Fade, Typography} from "@mui/material";
-import FarmList from "./FarmList.tsx";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
 import ErrorPage from "../error-page/ErrorPage.tsx";
-import {withRememberMe} from "../../hoc/withRememberMe.tsx";
+import OrderList from "./OrderList.tsx";
 import {customCompose} from "../../utils/customCompose.ts";
+import {withRememberMe} from "../../hoc/withRememberMe.tsx";
 import {withAuth} from "../../hoc/withAuth.tsx";
 
-const Farms = () => {
-
-    const {data, error, isLoading} = useGetFarmsQuery();
+const Orders = () => {
+    const {data, error, isLoading} = useGetMyOrdersQuery();
 
     if (isLoading) {
         return <IsLoading/>
@@ -40,29 +39,12 @@ const Farms = () => {
                 <Typography variant="h4"
                             align="center"
                             sx={{mt: 2}}>
-                    Farms
+                    My Orders
                 </Typography>
             </Fade>
-            {data && data.length > 0 ? (
-                <FarmList farms={data}/>
-            ) : (
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minHeight: '80vh',
-                    p: 3,
-                    textAlign: 'center'
-                }}>
-                    <Typography color={"secondary"}
-                                variant={"h3"}>
-                        No Farms Found
-                    </Typography>
-                </Box>
-            )}
+            <OrderList orders={data}/>
         </Box>
     )
 }
 
-export default customCompose(withRememberMe, withAuth)(Farms);
+export default customCompose(withRememberMe, withAuth)(Orders);
