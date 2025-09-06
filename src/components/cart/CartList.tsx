@@ -10,8 +10,8 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useClearCartMutation, useDeleteCartItemMutation} from "../../service/cartApi.ts";
 import type {CartResponseDto} from "../../models/CartModels.ts";
-import {useReserveOrderMutation} from "../../service/orderApi.ts";
-import {useNavigate} from "react-router-dom";
+import {useCreatePaymentMutation} from "../../service/paypalApi.tsx";
+import IsLoading from "../is-loading-page/IsLoading.tsx";
 
 interface SnackbarState {
     open: boolean;
@@ -27,8 +27,7 @@ interface Props {
 const CartList = ({cart, setSnackbar}: Props) => {
     const [clearCart] = useClearCartMutation();
     const [deleteCartItem] = useDeleteCartItemMutation();
-    const [reserveOrder] = useReserveOrderMutation();
-    const navigate = useNavigate();
+    const [createPayment, {isLoading}] = useCreatePaymentMutation();
 
     const handleClearCart = async () => {
         try {
@@ -66,14 +65,27 @@ const CartList = ({cart, setSnackbar}: Props) => {
         }
     };
 
-    const handleReserveOrder = async () => {
+    const handleCheckout = async () => {
+        const urls = {
+            successUrl: 'http://localhost:5174/paypal-success',
+            cancelUrl: 'http://localhost:5174/cart',
+        };
+
         try {
-            await reserveOrder().unwrap();
-            navigate('/checkout')
-        } catch (error) {
-            console.error('Add to cart failed:', error);
-            // const message = (error as ApiError).data.message ? (error as ApiError).data.message : "Unexpected error";
+            const response = await createPayment(urls).unwrap();
+            window.location.href = response.approvalUrl;
+        } catch (err) {
+            console.error('PayPal payment failed:', err);
+            setSnackbar({
+                open: true,
+                message: 'Payment failed. Try again.',
+                severity: 'error',
+            });
         }
+    };
+
+    if (isLoading) {
+        return <IsLoading/>
     }
 
     return (
@@ -186,7 +198,7 @@ const CartList = ({cart, setSnackbar}: Props) => {
                     <Button
                         variant="contained"
                         color="success"
-                        onClick={handleReserveOrder}
+                        onClick={handleCheckout}
                         sx={{
                             fontSize: { xs: "0.75rem", sm: "0.9rem" },
                             px: { xs: 2, sm: 3 },

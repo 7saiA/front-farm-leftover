@@ -6,6 +6,7 @@ import {authApi} from "../service/authApi.ts";
 import authSlice from "../features/authSlice.ts";
 import {cartApi} from "../service/cartApi.ts";
 import {orderApi} from "../service/orderApi.ts";
+import {paypalApi} from "../service/paypalApi.tsx";
 
 export const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
         [authApi.reducerPath]: authApi.reducer,
         [cartApi.reducerPath]: cartApi.reducer,
         [orderApi.reducerPath]: orderApi.reducer,
+        [paypalApi.reducerPath]: paypalApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
@@ -23,6 +25,7 @@ export const store = configureStore({
             .concat(authApi.middleware)
             .concat(cartApi.middleware)
             .concat(orderApi.middleware)
+            .concat(paypalApi.middleware)
 });
 
 setupListeners(store.dispatch);
