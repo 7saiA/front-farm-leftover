@@ -1,5 +1,4 @@
 export interface PayPalApprovalDto {
-    cartId: string;
     approvalUrl: string;
 }
 

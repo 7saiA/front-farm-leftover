@@ -14,6 +14,9 @@ import Cart from "./components/cart/Cart.tsx";
 import Orders from "./components/orders/Orders.tsx";
 import OrderInfo from "./components/orders/OrderInfo.tsx";
 import PayPalSuccess from "./components/paypal/PayPalSuccess.tsx";
+import PayPalRedirect from "./components/paypal/PayPalRedirect.tsx";
+import PayPalCancelRedirect from "./components/paypal/PayPalCancelRedirect.tsx";
+import PayPalCancelInfo from "./components/paypal/PayPalCancelInfo.tsx";
 
 
 function App() {
@@ -33,6 +36,9 @@ function App() {
                 <Route path={"/cart"} element={<Cart/>}/>
                 <Route path={'/orders'} element={<Orders/>}/>
                 <Route path={'/orders/:orderId'} element={<OrderInfo/>}/>
+                <Route path="/paypal-success-redirect" element={<PayPalRedirect />} />
+                <Route path="/paypal-cancel-redirect" element={<PayPalCancelRedirect />} />
+                <Route path="/paypal-cancel-info" element={<PayPalCancelInfo/>} />
                 <Route path="/paypal-success" element={<PayPalSuccess/>} />
             </Routes>
             <Footer/>

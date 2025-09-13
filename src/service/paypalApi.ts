@@ -31,11 +31,18 @@ export const paypalApi = createApi({
                 method: 'GET',
                 params: { paymentId, payerId },
             })
+        }),
+        payCancel: builder.mutation<{ message: string }, void>({
+            query: () => ({
+                url: '/cancel',
+                method: 'GET',
+            })
         })
     })
 })
 
 export const {
     useCreatePaymentMutation,
-    usePaySuccessMutation
+    usePaySuccessMutation,
+    usePayCancelMutation,
 } = paypalApi;

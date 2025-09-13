@@ -193,7 +193,7 @@ const ProfileProductList = () => {
                                         {product.productName}
                                     </Typography>
                                     <Typography variant={"body1"}>
-                                        Price: {product.pricePerUnit}/{product.unit}
+                                        Price: {product.pricePerUnit}$ per {product.unit}
                                     </Typography>
                                     <Typography variant={"body1"}>
                                         Available: {product.availableQuantity}

@@ -6,7 +6,7 @@ import {authApi} from "../service/authApi.ts";
 import authSlice from "../features/authSlice.ts";
 import {cartApi} from "../service/cartApi.ts";
 import {orderApi} from "../service/orderApi.ts";
-import {paypalApi} from "../service/paypalApi.tsx";
+import {paypalApi} from "../service/paypalApi.ts";
 
 export const store = configureStore({
     reducer: {

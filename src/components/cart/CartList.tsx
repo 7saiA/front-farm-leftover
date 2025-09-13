@@ -10,8 +10,10 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useClearCartMutation, useDeleteCartItemMutation} from "../../service/cartApi.ts";
 import type {CartResponseDto} from "../../models/CartModels.ts";
-import {useCreatePaymentMutation} from "../../service/paypalApi.tsx";
+import {useCreatePaymentMutation} from "../../service/paypalApi.ts";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 interface SnackbarState {
     open: boolean;
@@ -28,6 +30,7 @@ const CartList = ({cart, setSnackbar}: Props) => {
     const [clearCart] = useClearCartMutation();
     const [deleteCartItem] = useDeleteCartItemMutation();
     const [createPayment, {isLoading}] = useCreatePaymentMutation();
+    const navigate = useNavigate();
 
     const handleClearCart = async () => {
         try {
@@ -67,22 +70,33 @@ const CartList = ({cart, setSnackbar}: Props) => {
 
     const handleCheckout = async () => {
         const urls = {
-            successUrl: 'http://localhost:5174/paypal-success',
-            cancelUrl: 'http://localhost:5174/cart',
+            successUrl: `${window.location.origin}/paypal-success-redirect`,
+            cancelUrl: `${window.location.origin}/paypal-cancel-redirect`,
         };
 
         try {
             const response = await createPayment(urls).unwrap();
-            window.location.href = response.approvalUrl;
+            window.open(response.approvalUrl);
         } catch (err) {
             console.error('PayPal payment failed:', err);
-            setSnackbar({
-                open: true,
-                message: 'Payment failed. Try again.',
-                severity: 'error',
-            });
         }
     };
+
+    useEffect(() => {
+        const handleMessage = (event: MessageEvent) => {
+            if (event.origin !== window.location.origin) return;
+            if (event.data?.type === "PAYPAL_FOR_SUCCESS") {
+                const { paymentId, payerId } = event.data;
+                navigate(`/paypal-success?paymentId=${paymentId}&PayerID=${payerId}`);
+            }
+            if (event.data?.type === "PAYPAL_FOR_CANCEL") {
+                navigate("/paypal-cancel-info");
+            }
+        };
+
+        window.addEventListener("message", handleMessage);
+        return () => window.removeEventListener("message", handleMessage);
+    }, [navigate, window.location]);
 
     if (isLoading) {
         return <IsLoading/>
@@ -144,7 +158,7 @@ const CartList = ({cart, setSnackbar}: Props) => {
                                 color="black"
                                 sx={{ fontSize: { xs: "0.8rem", sm: "0.9rem" } }}
                             >
-                                {item.pricePerUnit}₪ per {item.unit}
+                                {item.pricePerUnit}$ per {item.unit}
                             </Typography>
                             <Typography
                                 variant="subtitle1"
@@ -159,7 +173,7 @@ const CartList = ({cart, setSnackbar}: Props) => {
                                 color={"secondary"}
                                 sx={{ fontSize: { xs: "0.8rem", sm: "0.9rem" } }}
                             >
-                                Subtotal: {item.subtotal}₪
+                                Subtotal: {item.subtotal}$
                             </Typography>
                         </Box>
                     </ListItem>

@@ -1,8 +1,8 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {usePaySuccessMutation} from "../../service/paypalApi.tsx";
-import {useEffect} from "react";
+import {usePaySuccessMutation} from "../../service/paypalApi.ts";
+// import {Box, Button, Typography} from "@mui/material";
 import IsLoading from "../is-loading-page/IsLoading.tsx";
-import ErrorPage from "../error-page/ErrorPage.tsx";
+import {useEffect} from "react";
 import {customCompose} from "../../utils/customCompose.ts";
 import {withRememberMe} from "../../hoc/withRememberMe.tsx";
 import {withAuth} from "../../hoc/withAuth.tsx";
@@ -11,45 +11,28 @@ const PayPalSuccess = () => {
     const [searchParams] = useSearchParams();
     const paymentId = searchParams.get("paymentId");
     const payerId = searchParams.get("PayerID");
+    const [paySuccess] = usePaySuccessMutation();
     const navigate = useNavigate();
-
-    const [paySuccess, { data, error, isLoading }] = usePaySuccessMutation();
 
     useEffect(() => {
         if (paymentId && payerId) {
-            const executePayment = async () => {
+            const confirmPayment = async () => {
+                console.log("paymentId:", paymentId, "PayerID:", payerId);
                 try {
-                    const res = await paySuccess({paymentId, payerId}).unwrap();
-                    console.log(res);
-                    if(res.message === "Payment successful!") {
-                        navigate("/orders");
+                    const res = await paySuccess({ paymentId, payerId }).unwrap();
+                    if (res.message === "Payment successful!") {
+                        navigate('/orders');
                     }
-                } catch (err) {
-                    console.error('Payment failed:', err);
+                } catch (e) {
+                    console.error("Payment failed:", e);
                 }
             };
-            executePayment();
+
+            confirmPayment();
         }
-    }, [paymentId, payerId]);
+    }, [paymentId, payerId, paySuccess, navigate]);
 
-    if (isLoading) {
-        return <IsLoading/>
-    }
-
-    if (error) {
-        const errorMessage = (
-            error &&
-            typeof error === 'object' &&
-            'data' in error &&
-            typeof error.data === 'string'
-        )
-            ? error.data
-            : 'An error occurred';
-
-        return <ErrorPage errorMessage={errorMessage} />;
-    }
-
-    return <div>{data ? data.message : "Waiting for payment confirmation..."}</div>;
-}
+    return <IsLoading/>
+};
 
 export default customCompose(withRememberMe, withAuth)(PayPalSuccess);
