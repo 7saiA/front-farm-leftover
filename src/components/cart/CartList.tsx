@@ -198,7 +198,7 @@ const CartList = ({cart, setSnackbar}: Props) => {
                         textAlign: { xs: "center", sm: "left" },
                     }}
                 >
-                    Total: {cart.totalPrice}₪
+                    Total: {cart.totalPrice}$
                 </Typography>
 
                 <Box

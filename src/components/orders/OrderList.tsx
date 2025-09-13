@@ -80,6 +80,8 @@ const OrderList = ({orders}: Props) => {
                                         flexBasis: { xs: "100%", sm: "25%" },
                                         fontSize: { xs: "0.9rem", sm: "1rem" },
                                         cursor: "pointer",
+                                        textDecoration: "underline",
+                                        textUnderlineOffset: "4px",
                                     }}
                                     onClick={(e) => handleClick(e, order.orderId)}
                                 >
